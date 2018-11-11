@@ -42,7 +42,7 @@ public class Screen extends JFrame {
         //this.getContentPane().setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         try
         {
-            setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,14));
+            setUIFont(new javax.swing.plaf.FontUIResource("Serif",Font.PLAIN,15)); //Tahoma 14 // Palatino Linotype
         }
         catch(Exception e){}
         this.setVisible(true);
@@ -120,6 +120,7 @@ public class Screen extends JFrame {
         b1.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         //b1.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         //b1.setBorder(new RoundedBorder(30));
+        b1.setFont(new Font("Serif", Font.BOLD, 20));
         b1.setFocusPainted(false);
         p1.add(b1);
 
@@ -129,6 +130,7 @@ public class Screen extends JFrame {
         b2.setForeground(Color.WHITE);
         b2.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b2.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b2.setFont(new Font("Serif", Font.BOLD, 20));
         b2.setFocusPainted(false);
         p1.add(b2);
 
@@ -138,6 +140,7 @@ public class Screen extends JFrame {
         b3.setForeground(Color.WHITE);
         b3.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b3.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b3.setFont(new Font("Serif", Font.BOLD, 20));
         b3.setFocusPainted(false);
         p1.add(b3);
 
@@ -147,6 +150,7 @@ public class Screen extends JFrame {
         b4.setForeground(Color.WHITE);
         b4.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b4.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b4.setFont(new Font("Serif", Font.BOLD, 20));
         b4.setFocusPainted(false);
         p1.add(b4);
 
@@ -156,6 +160,7 @@ public class Screen extends JFrame {
         b5.setForeground(Color.WHITE);
         b5.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b5.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b5.setFont(new Font("Serif", Font.BOLD, 20));
         b5.setFocusPainted(false);
         p1.add(b5);
 
@@ -165,6 +170,7 @@ public class Screen extends JFrame {
         b6.setForeground(Color.WHITE);
         b6.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b6.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b6.setFont(new Font("Serif", Font.BOLD, 20));
         b6.setFocusPainted(false);
         p1.add(b6);
 
@@ -174,6 +180,7 @@ public class Screen extends JFrame {
         b7.setForeground(Color.WHITE);
         b7.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b7.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b7.setFont(new Font("Serif", Font.BOLD, 20));
         b7.setFocusPainted(false);
         p1.add(b7);
 
@@ -183,6 +190,7 @@ public class Screen extends JFrame {
         b8.setForeground(Color.WHITE);
         b8.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b8.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b8.setFont(new Font("Serif", Font.BOLD, 20));
         b8.setFocusPainted(false);
         p1.add(b8);
 
@@ -192,6 +200,7 @@ public class Screen extends JFrame {
         b9.setForeground(Color.WHITE);
         b9.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b9.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b9.setFont(new Font("Serif", Font.BOLD, 20));
         b9.setFocusPainted(false);
         p1.add(b9);
 
@@ -201,6 +210,7 @@ public class Screen extends JFrame {
         b_quit.setForeground(Color.WHITE);
         b_quit.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b_quit.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b_quit.setFont(new Font("Serif", Font.BOLD, 20));
         b_quit.setFocusPainted(false);
         p1.add(b_quit);
 
@@ -210,6 +220,7 @@ public class Screen extends JFrame {
         b0.setForeground(Color.WHITE);
         b0.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b0.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b0.setFont(new Font("Serif", Font.BOLD, 20));
         b0.setFocusPainted(false);
         p1.add(b0);
 
@@ -220,6 +231,7 @@ public class Screen extends JFrame {
         b_grate.setForeground(Color.WHITE);
         b_grate.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b_grate.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b_grate.setFont(new Font("Serif", Font.BOLD, 20));
         b_grate.setFocusPainted(false);
         p1.add(b_grate);
 
@@ -229,6 +241,7 @@ public class Screen extends JFrame {
         cancel.setForeground(Color.WHITE);
         cancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
         cancel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        cancel.setFont(new Font("Serif", Font.BOLD, 20));
         cancel.setFocusPainted(false);
         p1.add(cancel);
 
@@ -238,6 +251,7 @@ public class Screen extends JFrame {
         delete.setForeground(Color.WHITE);
         delete.setFont(new Font("Tahoma", Font.PLAIN, 18));
         delete.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        delete.setFont(new Font("Serif", Font.BOLD, 20));
         delete.setFocusPainted(false);
         p1.add(delete);
 
@@ -247,6 +261,7 @@ public class Screen extends JFrame {
         ok.setForeground(Color.WHITE);
         ok.setFont(new Font("Tahoma", Font.PLAIN, 18));
         ok.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        ok.setFont(new Font("Serif", Font.BOLD, 20));
         ok.setFocusPainted(false);
         p1.add(ok);
 
@@ -1259,9 +1274,24 @@ public class Screen extends JFrame {
 
     private static void successfulLoginMenu(JPanel p){
         currentMenu = "successfulLoginMenu";
-        JLabel l = new JLabel("Welcome, ");
-        l.setBounds(150,60,200, 30);
+        JLabel l = new JLabel("Welcome. Please, select the operation:");
+        l.setBounds(135,60,300, 30);
         p.add(l);
+
+//        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+//        separator.setBackground(Color.gray);
+//        separator.setForeground(Color.gray);
+//        separator.setBounds(115, 90, 300, 3);
+//        p.add(separator);
+        JPanel pLabels = new JPanel();
+        pLabels.setLayout(null);
+        pLabels.setBounds(135,90,220,130);
+        pLabels.setBackground(Color.white);
+        pLabels.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        pLabels.setOpaque(false);
+        pLabels.setVisible(true);
+        p.add(pLabels);
+
         JLabel lOptions = new JLabel("1 - Transfer");
         lOptions.setBounds(150,90,200, 30);
         p.add(lOptions);
