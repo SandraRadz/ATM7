@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
+import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,8 @@ public class Screen extends JFrame {
         this.setLayout(null);
         this.setSize(1000, 640);
         this.setResizable(false);
+        this.getContentPane().setBackground(Color.WHITE);
+        //this.getContentPane().setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         try
         {
             setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,14));
@@ -48,136 +51,203 @@ public class Screen extends JFrame {
         JPanel p = new JPanel();
         p.setLayout(null);
         p.setBounds(30,30,500,265);
-        //p.setBackground(Color.gray);
-        p.setBorder(BorderFactory.createTitledBorder("Main Screen"));
+        p.setBackground(Color.white);
+        //p.setBorder(BorderFactory.createTitledBorder("Main Screen"));
+        p.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         p.setVisible(false);
         this.add(p);
 
         JPanel p1 = new JPanel();
         p1.setLayout(null);
         p1.setBounds(30,315,500,265);
-        //p1.setBackground(Color.gray);
-        p1.setBorder(BorderFactory.createTitledBorder("Keyboard"));
+        p1.setBackground(Color.white);
+        //p1.setBorder(BorderFactory.createTitledBorder("Keyboard"));
+        p1.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         p1.setVisible(false);
         this.add(p1);
 
         JPanel p2 = new JPanel();
         p2.setBounds(560,30,410,550);
-        //p1.setBackground(Color.gray);
-        p2.setBorder(BorderFactory.createTitledBorder("Card reception and money delivery"));
+        p2.setBackground(Color.white);
+//        p2.setBorder(BorderFactory.createTitledBorder("Card reception and money delivery"));
+        p2.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         p2.setVisible(false);
 
         BufferedImage bankLogoPicture = ImageIO.read(new File("Logo/1try.png"));
-        JLabel bankLogoLabel = new JLabel(new ImageIcon(bankLogoPicture.getScaledInstance(370, 200, Image.SCALE_FAST)));
+        JLabel bankLogoLabel = new JLabel(new ImageIcon(bankLogoPicture.getScaledInstance(370, 200, Image.SCALE_SMOOTH)));
         p2.add(bankLogoLabel);
+
+        //p2.add(new JSeparator(SwingConstants.HORIZONTAL));
+        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+        Dimension d = separator.getPreferredSize();
+        d.width = p2.getPreferredSize().width;
+        separator.setPreferredSize(d);
+        separator.setBackground(Color.gray);
+        separator.setForeground(Color.gray);
+        p2.add(separator);
 
         JLabel cardAcceptedLabel = new JLabel("We only accept: ", SwingConstants.CENTER);
         cardAcceptedLabel.setBounds(10,420,370, 30);
         p2.add(cardAcceptedLabel);
 
         BufferedImage cardLogoPicture = ImageIO.read(new File("Logo/card2.png"));
-        JLabel cardLogoLabel = new JLabel(new ImageIcon(cardLogoPicture.getScaledInstance(200, 100, Image.SCALE_FAST)), SwingConstants.CENTER);
+        JLabel cardLogoLabel = new JLabel(new ImageIcon(cardLogoPicture.getScaledInstance(200, 100, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
         p2.add(cardLogoLabel);
 
+        JSeparator separator1 = new JSeparator(SwingConstants.HORIZONTAL);
+        Dimension d1 = separator.getPreferredSize();
+        d1.width = separator.getPreferredSize().width;
+        separator1.setPreferredSize(d1);
+        separator1.setBackground(Color.gray);
+        separator1.setForeground(Color.gray);
+        p2.add(separator1);
+
         BufferedImage cardEntrancePicture = ImageIO.read(new File("Logo/cardEntrance2.png"));
-        JLabel cardEntranceLabelLabel = new JLabel(new ImageIcon(cardEntrancePicture.getScaledInstance(140, 20, Image.SCALE_FAST)), SwingConstants.CENTER);
+        JLabel cardEntranceLabelLabel = new JLabel(new ImageIcon(cardEntrancePicture.getScaledInstance(140, 20, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
         p2.add(cardEntranceLabelLabel);
 
-        BufferedImage moneyRetrPicture = ImageIO.read(new File("Logo/moneyRetr2.png"));
-        JLabel moneyRetrLabel = new JLabel(new ImageIcon(moneyRetrPicture.getScaledInstance(320, 150, Image.SCALE_FAST)), SwingConstants.CENTER);
+        BufferedImage moneyRetrPicture = ImageIO.read(new File("Logo/moneyRetr5.png"));
+        JLabel moneyRetrLabel = new JLabel(new ImageIcon(moneyRetrPicture.getScaledInstance(320, 150, Image.SCALE_SMOOTH)), SwingConstants.CENTER);
         p2.add(moneyRetrLabel);
 
         this.add(p2);
 
         JButton b1 = new JButton("1");
         b1.setBounds(30,30,140,33);
-        b1.setBackground(Color.GRAY);
+        b1.setBackground(new Color(64,128,128));
         b1.setForeground(Color.WHITE);
+        b1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b1.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        //b1.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+        //b1.setBorder(new RoundedBorder(30));
+        b1.setFocusPainted(false);
         p1.add(b1);
 
         JButton b2 = new JButton("2");
         b2.setBounds(180,30,140,33);
-        b2.setBackground(Color.GRAY);
+        b2.setBackground(new Color(64,128,128));
         b2.setForeground(Color.WHITE);
+        b2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b2.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b2.setFocusPainted(false);
         p1.add(b2);
 
         JButton b3 = new JButton("3");
         b3.setBounds(330,30,140,33);
-        b3.setBackground(Color.GRAY);
+        b3.setBackground(new Color(64,128,128));
         b3.setForeground(Color.WHITE);
+        b3.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b3.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b3.setFocusPainted(false);
         p1.add(b3);
 
         JButton b4 = new JButton("4");
         b4.setBounds(30,73,140,33);
-        b4.setBackground(Color.GRAY);
+        b4.setBackground(new Color(64,128,128));
         b4.setForeground(Color.WHITE);
+        b4.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b4.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b4.setFocusPainted(false);
         p1.add(b4);
 
         JButton b5 = new JButton("5");
         b5.setBounds(180,73,140,33);
-        b5.setBackground(Color.GRAY);
+        b5.setBackground(new Color(64,128,128));
         b5.setForeground(Color.WHITE);
+        b5.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b5.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b5.setFocusPainted(false);
         p1.add(b5);
 
         JButton b6 = new JButton("6");
         b6.setBounds(330,73,140,33);
-        b6.setBackground(Color.GRAY);
+        b6.setBackground(new Color(64,128,128));
         b6.setForeground(Color.WHITE);
+        b6.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b6.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b6.setFocusPainted(false);
         p1.add(b6);
 
         JButton b7 = new JButton("7");
         b7.setBounds(30,116,140,33);
-        b7.setBackground(Color.GRAY);
+        b7.setBackground(new Color(64,128,128));
         b7.setForeground(Color.WHITE);
+        b7.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b7.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b7.setFocusPainted(false);
         p1.add(b7);
 
         JButton b8 = new JButton("8");
         b8.setBounds(180,116,140,33);
-        b8.setBackground(Color.GRAY);
+        b8.setBackground(new Color(64,128,128));
         b8.setForeground(Color.WHITE);
+        b8.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b8.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b8.setFocusPainted(false);
         p1.add(b8);
 
         JButton b9 = new JButton("9");
         b9.setBounds(330,116,140,33);
-        b9.setBackground(Color.GRAY);
+        b9.setBackground(new Color(64,128,128));
         b9.setForeground(Color.WHITE);
+        b9.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b9.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b9.setFocusPainted(false);
         p1.add(b9);
 
         JButton b_quit = new JButton("QUIT");
         b_quit.setBounds(30,159,140,33);
-        b_quit.setBackground(Color.GRAY);
+        b_quit.setBackground(new Color(64,128,128));
         b_quit.setForeground(Color.WHITE);
+        b_quit.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b_quit.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b_quit.setFocusPainted(false);
         p1.add(b_quit);
 
         JButton b0 = new JButton("0");
         b0.setBounds(180,159,140,33);
-        b0.setBackground(Color.GRAY);
+        b0.setBackground(new Color(64,128,128));
         b0.setForeground(Color.WHITE);
+        b0.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b0.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b0.setFocusPainted(false);
         p1.add(b0);
 
 
         JButton b_grate = new JButton("#");
         b_grate.setBounds(330,159,140,33);
-        b_grate.setBackground(Color.GRAY);
+        b_grate.setBackground(new Color(64,128,128));
         b_grate.setForeground(Color.WHITE);
+        b_grate.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        b_grate.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        b_grate.setFocusPainted(false);
         p1.add(b_grate);
 
         JButton cancel = new JButton("Cancel");
         cancel.setBounds(30,202,140,33);
-        cancel.setBackground(Color.GRAY);
+        cancel.setBackground(new Color(64,128,128));
         cancel.setForeground(Color.WHITE);
+        cancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        cancel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        cancel.setFocusPainted(false);
         p1.add(cancel);
 
         JButton delete = new JButton("Delete");
         delete.setBounds(180,202,140,33);
-        delete.setBackground(Color.GRAY);
+        delete.setBackground(new Color(64,128,128));
         delete.setForeground(Color.WHITE);
+        delete.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        delete.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        delete.setFocusPainted(false);
         p1.add(delete);
 
         JButton ok = new JButton("OK");
         ok.setBounds(330,202,140,33);
-        ok.setBackground(Color.GRAY);
+        ok.setBackground(new Color(64,128,128));
         ok.setForeground(Color.WHITE);
+        ok.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        ok.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
+        ok.setFocusPainted(false);
         p1.add(ok);
 
         //keyboard buttons functions logic
@@ -939,7 +1009,7 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if(currentMenu.equals("cashBalances_sum")){
+            else if(currentMenu.equals("cashBalances_sum") && sum.getText().length() > 0){
                 //TODO validate via db
                 //if(sum.getText().length() == 16) {
                 p.removeAll();
@@ -953,7 +1023,7 @@ public class Screen extends JFrame {
                 }
                 //}
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() > 0){
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "transferMenuSecond";
@@ -999,7 +1069,7 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() > 0){
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "confirmMenu";
@@ -1310,6 +1380,31 @@ public class Screen extends JFrame {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
             if(value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
+        }
+    }
+
+    private static class RoundedBorder implements Border {
+
+        private int radius;
+
+
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+        }
+
+
+        public boolean isBorderOpaque() {
+            return true;
+        }
+
+
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
         }
     }
 
