@@ -10,9 +10,13 @@ import javax.swing.JPasswordField;
 import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 //TODO add more safe validation (check for sum == 0 etc.)
 //TODO improve UI
@@ -32,6 +36,8 @@ public class Screen extends JFrame {
     static private JTextField withdrawSumField;
     static private JTextArea date;
     static private long lastInteractionTime;
+
+    static private int[] operationData;
 
     public Screen () throws Exception {
         this.setTitle("ATM 7");
@@ -1091,6 +1097,9 @@ public class Screen extends JFrame {
                 confirmingOp = "confirmWithdrawal";
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
+                        operationData = new int[2];
+                        operationData[0] = 3; //withdrawal operation code
+                        operationData[1] = Integer.parseInt(withdrawSumField.getText()); //withdrawal sum
                         confirmMenu(p, "confirmWithdrawal");
                     } else {
                         //failed to withdraw
@@ -1108,6 +1117,44 @@ public class Screen extends JFrame {
                 nextMenu = "successfulLoginMenu";
                 confirmingOp = "";
                 if (!timeout()){
+                    boolean opRes =  Main.sendTransactionData(operationData);
+                    if (opRes){
+                        //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        final JDialog dialog = new JDialog(this, "Success", true);
+                        dialog.setSize(200,200);
+                        dialog.setLocationRelativeTo(null);
+                        JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
+                        dialog.add(succ);
+                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+                        s.schedule(new Runnable() {
+                            public void run() {
+                                dialog.setVisible(false); //should be invoked on the EDT
+                                dialog.dispose();
+                            }
+                        }, 2, TimeUnit.SECONDS);
+                        dialog.setVisible(true);
+
+                    } else {
+                        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
+                        final JDialog dialog = new JDialog(this, "Error", true);
+                        dialog.setSize(200,200);
+                        dialog.setLocationRelativeTo(null);
+                        JLabel succ = new JLabel("Operation error!", SwingConstants.CENTER);
+                        dialog.add(succ);
+                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+                        s.schedule(new Runnable() {
+                            public void run() {
+                                dialog.setVisible(false); //should be invoked on the EDT
+                                dialog.dispose();
+                            }
+                        }, 2, TimeUnit.SECONDS);
+                        dialog.setVisible(true);
+                    }
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException ex){
+
+                    }
                     successfulLoginMenu(p);
                 }
                 else {
@@ -1385,7 +1432,8 @@ public class Screen extends JFrame {
         String operation = s;
         //TODO get corresponding data from DB
         if (operation.equals("confirmWithdrawal")) {
-            l = new JLabel("You are about to withdraw: $");
+            int sum = operationData[1];
+            l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
             l.setBounds(150, 60, 320, 30);
             p.add(l);
         }
