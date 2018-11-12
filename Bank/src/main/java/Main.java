@@ -29,12 +29,21 @@ public class Main {
 
             String line = null;
             while(true) {
-                line = in.readUTF(); // ожидаем пока клиент пришлет строку текста.
-                System.out.println("The dumb client just sent me this line : " + line);
-                System.out.println("I'm sending it back...");
-                out.writeUTF(line); // отсылаем клиенту обратно ту самую строку текста.
+//                line = in.readUTF(); // ожидаем пока клиент пришлет строку текста.
+//                System.out.println("The dumb client just sent me this line : " + line);
+//                System.out.println("I'm sending it back...");
+//                out.writeUTF(line); // отсылаем клиенту обратно ту самую строку текста.
+//                out.flush(); // заставляем поток закончить передачу данных.
+//                System.out.println("Waiting for the next line...");
+//                System.out.println();
+                int len = in.readInt();
+                int[] data = new int[len];
+                for(int i = 0; i < len; i++) {
+                    data[i] = in.readInt();
+                    System.out.println(Integer.toString(data[i]));
+                }
                 out.flush(); // заставляем поток закончить передачу данных.
-                System.out.println("Waiting for the next line...");
+                System.out.println("Waiting for the next operation data...");
                 System.out.println();
             }
         } catch(Exception x) { x.printStackTrace(); }

@@ -3,6 +3,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class Main {
+    private static DataOutputStream out;
+
     public static void main(String[] args) throws Exception {
         Screen c = new Screen();
 
@@ -22,7 +24,7 @@ public class Main {
 
             // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
             DataInputStream in = new DataInputStream(sin);
-            DataOutputStream out = new DataOutputStream(sout);
+            out = new DataOutputStream(sout);
 
             // Создаем поток для чтения с клавиатуры.
             BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
@@ -45,5 +47,27 @@ public class Main {
         }
 
     }
+    public static boolean sendTransactionData(int data[]){
+        //ALGORITHM:
+        //1) sending incoming array length;
+        //2) sending ATM operation's code (1 - ..., 2 -, 3 - withdrawal).
+        //3) the server should process data accordingly to the operation's code
+        try {
+            out.writeInt(data.length);
+            for (int i = 0; i < data.length; i++) {
+                out.writeInt(data[i]);
+            }
+        } catch (IOException ex){
+            System.err.println("Data streaming to server error!");
+        }
 
+        //transaction successful; server responded positively
+        if (true){
+            return true;
+        }
+        //transaction unsuccessful
+        else {
+            return false;
+        }
+    }
 }
