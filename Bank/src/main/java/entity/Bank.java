@@ -1,3 +1,4 @@
+package main.java.entity;
 
 public class Bank {
     private static int bankId;

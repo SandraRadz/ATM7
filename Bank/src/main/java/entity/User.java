@@ -1,9 +1,17 @@
+package main.java.entity;
+
 public class User {
     private static int identityNumber;
     private static String firstName;
     private static String lastName;
 
-    User(int id, String firstName, String lastName) {
+    public User() {
+        identityNumber = 0;
+        firstName = "";
+        lastName = "";
+    }
+
+    public User(int id, String firstName, String lastName) {
         identityNumber = id;
         firstName = firstName;
         lastName = lastName;

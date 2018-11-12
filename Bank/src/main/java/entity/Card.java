@@ -1,4 +1,4 @@
-//import com.radzievska.domain.Bank;
+package main.java.entity;//import com.radzievska.domain.entity.Bank;
 
 public class Card {
     private static long cardNumber;
@@ -18,10 +18,6 @@ public class Card {
     public static long getCardNumber() {
         return cardNumber;
     }
-
-    //  public static void setCardNumber(long cardNumber) {
-    //      Card.cardNumber = cardNumber;
-    //  }
 
     public static double getSum() {
         return sum;
