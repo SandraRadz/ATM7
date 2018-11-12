@@ -1,11 +1,17 @@
 package main.java.entity;//import com.radzievska.domain.entity.Bank;
 
-public class Card {
+    public class Card {
     private static long cardNumber;
     private static int pin;
     private static double sum;
-    private static Bank bank;
-    private static User user;
+    private static String user;
+
+   public Card(){
+       cardNumber=0;
+       pin=0;
+       sum=0;
+       user="";
+   }
 
     public static int getPin() {
         return pin;
@@ -19,23 +25,19 @@ public class Card {
         return cardNumber;
     }
 
+    public static void setCardNumber(long cardNumber) {
+        Card.cardNumber = cardNumber;
+    }
+
     public static double getSum() {
         return sum;
     }
 
-    public static Bank getBank() {
-        return bank;
-    }
-
-    public static void setBank(Bank bank) {
-        Card.bank = bank;
-    }
-
-    public static User getUser() {
+    public static String getUser() {
         return user;
     }
 
-    public static void setUser(User user) {
+    public static void setUser(String user) {
         Card.user = user;
     }
 

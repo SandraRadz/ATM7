@@ -12,5 +12,6 @@
     <orderEntry type="library" name="spring-dao-2.0.6" level="project" />
     <orderEntry type="library" name="spring-beans-2.0" level="project" />
     <orderEntry type="library" name="org.springframework.jdbc-3.0.2.release" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.23-bin" level="project" />
   </component>
 </module>

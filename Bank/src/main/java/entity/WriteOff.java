@@ -6,8 +6,8 @@ import java.util.Date;
 public class WriteOff {
     private static long id;
     private static double sum;
-    private static Date date;
-    private static Time time;
+    //private static Date date;
+    //private static Time time;
     private static Card cardSender;
     //private static ATM atm;
     private static Card cardReceiver;
@@ -28,7 +28,7 @@ public class WriteOff {
         WriteOff.sum = sum;
     }
 
-    public static Date getDate() {
+   /* public static Date getDate() {
         return date;
     }
 
@@ -43,7 +43,7 @@ public class WriteOff {
     public static void setTime(Time time) {
         WriteOff.time = time;
     }
-
+*/
     public static Card getCardSender() {
         return cardSender;
     }
