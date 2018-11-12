@@ -1,6 +1,6 @@
-package main.java.dao;
+package dao;
 
-import main.java.entity.Card;
+import entity.Card;
 
 public interface CardDao {
     Card get(long cardNum, int pin);

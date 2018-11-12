@@ -1,8 +1,8 @@
-package main.java.dao.impl;
+package dao.impl;
 
-import main.java.dao.WriteOffDao;
-import main.java.entity.Card;
-import main.java.entity.WriteOff;
+import dao.WriteOffDao;
+import entity.Card;
+import entity.WriteOff;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 

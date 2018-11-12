@@ -1,4 +1,4 @@
-package main.java.entity;//import com.radzievska.domain.entity.Bank;
+package entity;//import com.radzievska.domain.entity.Bank;
 
     public class Card {
     private static long cardNumber;

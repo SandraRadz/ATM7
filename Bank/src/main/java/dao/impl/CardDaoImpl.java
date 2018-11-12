@@ -1,7 +1,7 @@
-package main.java.dao.impl;
+package dao.impl;
 
-import main.java.dao.CardDao;
-import main.java.entity.Card;
+import dao.CardDao;
+import entity.Card;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 

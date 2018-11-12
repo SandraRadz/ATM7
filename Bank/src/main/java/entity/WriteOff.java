@@ -1,7 +1,8 @@
-package main.java.entity;
+package entity;
 
 import java.sql.Time;
 import java.util.Date;
+import entity.Card;
 
 public class WriteOff {
     private static long id;
