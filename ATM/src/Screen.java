@@ -1130,6 +1130,7 @@ public class Screen extends JFrame {
                             public void run() {
                                 dialog.setVisible(false); //should be invoked on the EDT
                                 dialog.dispose();
+                                //successfulLoginMenu(p);
                             }
                         }, 2, TimeUnit.SECONDS);
                         dialog.setVisible(true);
@@ -1150,11 +1151,8 @@ public class Screen extends JFrame {
                         }, 2, TimeUnit.SECONDS);
                         dialog.setVisible(true);
                     }
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException ex){
-
-                    }
+                    p.removeAll();
+                    p.updateUI();
                     successfulLoginMenu(p);
                 }
                 else {
