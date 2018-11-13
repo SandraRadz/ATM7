@@ -35,7 +35,7 @@ public class Main {
 //                out.writeUTF(line); // отсылаем клиенту обратно ту самую строку текста.
 //                out.flush(); // заставляем поток закончить передачу данных.
 //                System.out.println("Waiting for the next line...");
-//                System.out.println();
+//                System.out.println(Integer.toString((500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)));
                 int len = in.readInt();
                 int[] data = new int[len];
                 for(int i = 0; i < len; i++) {

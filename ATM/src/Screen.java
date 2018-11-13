@@ -38,6 +38,7 @@ public class Screen extends JFrame {
 
     static private int[] operationData;
 
+    //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
     static private int[] bills = new int[6];
 
