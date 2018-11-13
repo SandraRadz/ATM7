@@ -1538,9 +1538,9 @@ public class Screen extends JFrame {
         return new int[0];
     }
 
-    private static void updateBillsValues(int[] newBillsVls){
-        for (int i = 0; i < newBillsVls.length; i++){
-            bills[i] = newBillsVls[i];
+    private static void updateBillsValues(int[] blsNeeded){
+        for (int i = 0; i < blsNeeded.length; i++){
+            bills[i] = bills[i] - blsNeeded[i];
         }
         return;
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Main {
     private static DataOutputStream out;
+    private static DataInputStream in;
 
     public static void main(String[] args) throws Exception {
         Screen c = new Screen();
@@ -24,7 +25,7 @@ public class Main {
             OutputStream sout = socket.getOutputStream();
 
             // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
-            DataInputStream in = new DataInputStream(sin);
+            in = new DataInputStream(sin);
             out = new DataOutputStream(sout);
 
             // Создаем поток для чтения с клавиатуры.
@@ -75,13 +76,17 @@ public class Main {
         try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
             oos.writeObject(data);
 
-            //out.writeInt(data.size());
-//            for (int i = 0; i < data.length; i++) {
-//                out.writeInt(data[i]);
-//            }
+        while (true){
+            String opRes = in.readUTF();
+            if (!opRes.equals(null)){
+                return opRes;
+            }
+        }
+
         } catch (IOException ex){
             System.err.println("Data streaming to server error!");
         }
         return "";
+        //return "ERROR sending data to server";
     }
 }
