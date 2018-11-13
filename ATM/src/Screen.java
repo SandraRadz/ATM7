@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,7 +37,10 @@ public class Screen extends JFrame {
     static private JTextArea date;
     static private long lastInteractionTime;
 
-    static private int[] operationData;
+    //static private int[] operationData;
+    static private ArrayList<String> operationData;
+
+    static private String cardNum = "1616161616161616"; //16 digit; tmp number
 
     //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
@@ -1100,9 +1104,10 @@ public class Screen extends JFrame {
                 confirmingOp = "confirmWithdrawal";
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
-                        operationData = new int[2];
-                        operationData[0] = 3; //withdrawal operation code
-                        operationData[1] = Integer.parseInt(withdrawSumField.getText()); //withdrawal sum
+                        operationData = new ArrayList<String>();
+                        operationData.add("3");//withdrawal operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(withdrawSumField.getText());//withdrawal sum
                         confirmMenu(p, "confirmWithdrawal");
                     } else {
                         //failed to withdraw
@@ -1120,35 +1125,40 @@ public class Screen extends JFrame {
                 nextMenu = "successfulLoginMenu";
                 confirmingOp = "";
                 if (!timeout()){
+                    //check whether there are enough needed bills in ATM
+                    int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(2)));
+                    if (blsNeeded.length == 0){
+                        displayOpError(this, p, "Not enough bills for giving out such sum.");
+                        p.removeAll();
+                        p.updateUI();
+                        successfulLoginMenu(p);
+                    }
+
                     //send data to server for processing
-                    boolean opRes =  Main.sendTransactionData(operationData);
-                    if (!opRes) {
-                        displayOpError(this, p);
+                    String opRes =  Main.sendTransactionData(operationData);
+                    if (opRes.contains("ERROR")) {
+                        displayOpError(this, p, opRes);
                         p.removeAll();
                         p.updateUI();
                         successfulLoginMenu(p);
                     }
 
-                    //change the values of the bills available => give out money, if everything is alright
-                    //...
+                    //change the values of the bills available => give out money
+                    updateBillsValues(blsNeeded);
 
-
+                    //TODO ...not implementing error during changing bills as of right now
                     boolean rewritingBillsRes = writeBills();
-                    //check whether everything is alright and display corresponding message
-                    if (!rewritingBillsRes) {
-                        displayOpError(this, p);
+//                    if (!rewritingBillsRes) {
+//                        displayOpError(this, p);
+//                        p.removeAll();
+//                        p.updateUI();
+//                        successfulLoginMenu(p);
+//                    } else {
+                        displayOpSuccess(this, p, opRes);
                         p.removeAll();
                         p.updateUI();
                         successfulLoginMenu(p);
-                    } else {
-                        displayOpSuccess(this, p);
-                        p.removeAll();
-                        p.updateUI();
-                        successfulLoginMenu(p);
-                    }
-//                    p.removeAll();
-//                    p.updateUI();
-//                    successfulLoginMenu(p);
+//                    }
                 }
                 else {
                     PINTimeout(p);
@@ -1183,7 +1193,7 @@ public class Screen extends JFrame {
         //Read bills info.
         boolean getBillsInfo = readBills();
         if (!getBillsInfo){
-            displayOpError(this, p, "NON_OPERATIONAL_STATE");
+            displayOpError(this, p, "NON_OPERATIONAL_STATE", "CALL_ATM_SERVICE");
             //+ alt+f4 should exit program fully
         }
     }
@@ -1202,7 +1212,6 @@ public class Screen extends JFrame {
         //pin.setHighlighter(null);
         pin.setFocusable(false);
         pin.setEditable(false);
-        //pin.getCaret().deinstall( pin );
         p.add(pin);
         p.setVisible(true);
     }
@@ -1430,8 +1439,9 @@ public class Screen extends JFrame {
         String operation = s;
         //TODO get corresponding data from DB
         if (operation.equals("confirmWithdrawal")) {
-            int sum = operationData[1];
-            l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
+            String sum = operationData.get(2);
+            //l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
+            l = new JLabel("You are about to withdraw: $" + sum);
             l.setBounds(150, 60, 320, 30);
             p.add(l);
         }
@@ -1518,13 +1528,30 @@ public class Screen extends JFrame {
         return true;
     }
 
-    private static void displayOpSuccess(Screen sc, JPanel p) {
+    private static int[] calcNeededBills(int sumReq){
+//TODO implement bills counting
+        int[] blsNeeded = new int[6];
+        if(true){
+
+            return blsNeeded;
+        }
+        return new int[0];
+    }
+
+    private static void updateBillsValues(int[] newBillsVls){
+        for (int i = 0; i < newBillsVls.length; i++){
+            bills[i] = newBillsVls[i];
+        }
+        return;
+    }
+
+    private static void displayOpSuccess(Screen sc, JPanel p, String opRes) {
         //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Success", true);
         //dialog.setSize(200,200);
         dialog.setSize(p.getWidth(), p.getHeight());
         dialog.setLocationRelativeTo(p);
-        JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
+        JLabel succ = new JLabel("Operation successful: " + opRes, SwingConstants.CENTER);
         succ.setBackground(Color.WHITE);
         succ.setForeground(new Color(0,153,0));
         dialog.setUndecorated(true);
@@ -1541,12 +1568,12 @@ public class Screen extends JFrame {
         dialog.setVisible(true);
     }
 
-    private static void displayOpError(Screen sc, JPanel p){
+    private static void displayOpError(Screen sc, JPanel p, String opRes){
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
         dialog.setSize(p.getWidth(), p.getHeight());
         dialog.setLocationRelativeTo(p);
-        JLabel err = new JLabel("Operation error!", SwingConstants.CENTER);
+        JLabel err = new JLabel("Operation error: " + opRes, SwingConstants.CENTER);
         err.setBackground(Color.WHITE);
         err.setForeground(new Color(204,0,0));
         dialog.setUndecorated(true);
@@ -1561,7 +1588,7 @@ public class Screen extends JFrame {
         dialog.setVisible(true);
     }
 
-    private static void displayOpError(Screen sc, JPanel p, String state){
+    private static void displayOpError(Screen sc, JPanel p, String state, String diagn){
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
         dialog.setSize(p.getWidth(), p.getHeight());
