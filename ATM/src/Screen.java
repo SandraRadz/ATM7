@@ -1121,10 +1121,17 @@ public class Screen extends JFrame {
                     if (opRes){
                         //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                         final JDialog dialog = new JDialog(this, "Success", true);
-                        dialog.setSize(200,200);
-                        dialog.setLocationRelativeTo(null);
+                        //dialog.setSize(200,200);
+                        dialog.setSize(p.getWidth(), p.getHeight());
+                        dialog.setLocationRelativeTo(p);
                         JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
+                        succ.setBackground(Color.WHITE);
+                        succ.setForeground(new Color(0,153,0));
+                        dialog.setUndecorated(true);
                         dialog.add(succ);
+
+                        //give out money & change the values of the bills available
+
                         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
                         s.schedule(new Runnable() {
                             public void run() {
@@ -1138,10 +1145,13 @@ public class Screen extends JFrame {
                     } else {
                         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
                         final JDialog dialog = new JDialog(this, "Error", true);
-                        dialog.setSize(200,200);
-                        dialog.setLocationRelativeTo(null);
-                        JLabel succ = new JLabel("Operation error!", SwingConstants.CENTER);
-                        dialog.add(succ);
+                        dialog.setSize(p.getWidth(), p.getHeight());
+                        dialog.setLocationRelativeTo(p);
+                        JLabel err = new JLabel("Operation error!", SwingConstants.CENTER);
+                        err.setBackground(Color.WHITE);
+                        err.setForeground(new Color(204,0,0));
+                        dialog.setUndecorated(true);
+                        dialog.add(err);
                         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
                         s.schedule(new Runnable() {
                             public void run() {
