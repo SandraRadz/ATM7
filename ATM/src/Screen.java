@@ -9,8 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -38,6 +37,9 @@ public class Screen extends JFrame {
     static private long lastInteractionTime;
 
     static private int[] operationData;
+
+    //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
+    static private int[] bills = new int[6];
 
     public Screen () throws Exception {
         this.setTitle("ATM 7");
@@ -1117,53 +1119,35 @@ public class Screen extends JFrame {
                 nextMenu = "successfulLoginMenu";
                 confirmingOp = "";
                 if (!timeout()){
+                    //send data to server for processing
                     boolean opRes =  Main.sendTransactionData(operationData);
-                    if (opRes){
-                        //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        final JDialog dialog = new JDialog(this, "Success", true);
-                        //dialog.setSize(200,200);
-                        dialog.setSize(p.getWidth(), p.getHeight());
-                        dialog.setLocationRelativeTo(p);
-                        JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
-                        succ.setBackground(Color.WHITE);
-                        succ.setForeground(new Color(0,153,0));
-                        dialog.setUndecorated(true);
-                        dialog.add(succ);
-
-                        //give out money & change the values of the bills available
-
-                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-                        s.schedule(new Runnable() {
-                            public void run() {
-                                dialog.setVisible(false); //should be invoked on the EDT
-                                dialog.dispose();
-                                //successfulLoginMenu(p);
-                            }
-                        }, 2, TimeUnit.SECONDS);
-                        dialog.setVisible(true);
-
-                    } else {
-                        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
-                        final JDialog dialog = new JDialog(this, "Error", true);
-                        dialog.setSize(p.getWidth(), p.getHeight());
-                        dialog.setLocationRelativeTo(p);
-                        JLabel err = new JLabel("Operation error!", SwingConstants.CENTER);
-                        err.setBackground(Color.WHITE);
-                        err.setForeground(new Color(204,0,0));
-                        dialog.setUndecorated(true);
-                        dialog.add(err);
-                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-                        s.schedule(new Runnable() {
-                            public void run() {
-                                dialog.setVisible(false); //should be invoked on the EDT
-                                dialog.dispose();
-                            }
-                        }, 2, TimeUnit.SECONDS);
-                        dialog.setVisible(true);
+                    if (!opRes) {
+                        displayOpError(this, p);
+                        p.removeAll();
+                        p.updateUI();
+                        successfulLoginMenu(p);
                     }
-                    p.removeAll();
-                    p.updateUI();
-                    successfulLoginMenu(p);
+
+                    //change the values of the bills available => give out money, if everything is alright
+                    //...
+
+
+                    boolean rewritingBillsRes = writeBills();
+                    //check whether everything is alright and display corresponding message
+                    if (!rewritingBillsRes) {
+                        displayOpError(this, p);
+                        p.removeAll();
+                        p.updateUI();
+                        successfulLoginMenu(p);
+                    } else {
+                        displayOpSuccess(this, p);
+                        p.removeAll();
+                        p.updateUI();
+                        successfulLoginMenu(p);
+                    }
+//                    p.removeAll();
+//                    p.updateUI();
+//                    successfulLoginMenu(p);
                 }
                 else {
                     PINTimeout(p);
@@ -1494,6 +1478,83 @@ public class Screen extends JFrame {
         }
     }
 
+    private static boolean readBills(){
+        try (FileInputStream fis = new FileInputStream("bills.ser")){
+            try (ObjectInputStream ois = new ObjectInputStream(fis)){
+                bills = ((int[]) ois.readObject());
+            } catch (IOException ex){
+                return false;
+            } catch (ClassNotFoundException ex1){
+                return false;
+            }
+       } catch (FileNotFoundException ex){
+           //throw Error = new Error("Error: Can't read bills");
+            return false;
+       } catch (IOException ex1){
+            return false;
+       }
+        return true;
+    }
+
+    private static boolean writeBills(){
+        try (FileOutputStream fos = new FileOutputStream("bills.ser")){
+            try (ObjectOutputStream oos = new ObjectOutputStream(fos)){
+                oos.writeObject(bills);
+            } catch (IOException ex) {
+                return false;
+            }
+        } catch (FileNotFoundException ex){
+            //throw Error = new Error("Error: Can't read bills");
+            return false;
+        } catch (IOException ex1){
+            return false;
+        }
+        return true;
+    }
+
+    private static void displayOpSuccess(Screen sc, JPanel p) {
+        //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Success", true);
+        //dialog.setSize(200,200);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
+        succ.setBackground(Color.WHITE);
+        succ.setForeground(new Color(0,153,0));
+        dialog.setUndecorated(true);
+        dialog.add(succ);
+
+        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+        s.schedule(new Runnable() {
+            public void run() {
+                dialog.setVisible(false); //should be invoked on the EDT
+                dialog.dispose();
+                //successfulLoginMenu(p);
+            }
+        }, 2, TimeUnit.SECONDS);
+        dialog.setVisible(true);
+    }
+
+    private static void displayOpError(Screen sc, JPanel p){
+        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Error", true);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel err = new JLabel("Operation error!", SwingConstants.CENTER);
+        err.setBackground(Color.WHITE);
+        err.setForeground(new Color(204,0,0));
+        dialog.setUndecorated(true);
+        dialog.add(err);
+        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+        s.schedule(new Runnable() {
+            public void run() {
+                dialog.setVisible(false); //should be invoked on the EDT
+                dialog.dispose();
+            }
+        }, 2, TimeUnit.SECONDS);
+        dialog.setVisible(true);
+    }
+
     private static boolean timeout(){
         long currTime = Instant.now().getEpochSecond();
         if ((currTime - lastInteractionTime) > 300) {
@@ -1503,3 +1564,10 @@ public class Screen extends JFrame {
         return false;
     }
 }
+
+//RESERVED CODE
+
+//                        for (int i = 5; i < 11; i++){
+//                            bills[(i-5)] = i*100;
+//                        }
+//                        writeBills();
