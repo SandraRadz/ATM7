@@ -1175,12 +1175,17 @@ public class Screen extends JFrame {
 
 
         PIN(p);
-
         //p.setVisible(true);
         p1.setVisible(true);
         p2.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        //Read bills info.
+        boolean getBillsInfo = readBills();
+        if (!getBillsInfo){
+            displayOpError(this, p, "NON_OPERATIONAL_STATE");
+            //+ alt+f4 should exit program fully
+        }
     }
 
     //PIN entering
@@ -1554,6 +1559,22 @@ public class Screen extends JFrame {
             }
         }, 2, TimeUnit.SECONDS);
         dialog.setVisible(true);
+    }
+
+    private static void displayOpError(Screen sc, JPanel p, String state){
+        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Error", true);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel err = new JLabel("Bills reading error: " + state, SwingConstants.CENTER);
+        err.setBackground(Color.WHITE);
+        err.setForeground(new Color(204,0,0));
+        dialog.setUndecorated(true);
+        dialog.add(err);
+        dialog.setVisible(true);
+//        while(true){
+//
+//        }
     }
 
     private static boolean timeout(){
