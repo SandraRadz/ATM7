@@ -300,10 +300,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"1");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"1");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -311,7 +311,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"1");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -348,10 +348,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"2");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"2");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -359,7 +359,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"2");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -396,10 +396,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"3");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"3");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -407,7 +407,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"3");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -444,10 +444,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"4");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"4");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -455,7 +455,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"4");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -483,10 +483,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"5");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"5");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -494,7 +494,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"5");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -522,10 +522,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"6");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"6");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -533,7 +533,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"6");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -561,10 +561,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"7");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"7");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -572,7 +572,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"7");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -600,10 +600,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"8");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"8");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -611,7 +611,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"8");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -639,10 +639,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"9");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"9");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -650,7 +650,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"9");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -736,10 +736,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum") && !sum.getText().equals("") && sum.getText()!= null) {
+            else if (currentMenu.equals("cashBalances_sum") && !sum.getText().equals("") && sum.getText().length() < 6) {
                 sum.setText(sum.getText()+"0");
             }
-            else if(currentMenu.equals("transferMenu") && !transferSumField.getText().equals("")) {
+            else if(currentMenu.equals("transferMenu") && !transferSumField.getText().equals("") && transferSumField.getText().length() < 6) {
                 transferSumField.setText(transferSumField.getText() + "0");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -747,7 +747,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && !withdrawSumField.getText().equals("") && withdrawSumField.getText().length() < 6){
                 if(!withdrawSumField.getText().equals("")) {
                     withdrawSumField.setText(withdrawSumField.getText() + "0");
                 }
