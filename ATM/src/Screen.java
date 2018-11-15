@@ -438,7 +438,11 @@ public class Screen extends JFrame {
                 p.updateUI();
                 nextMenu =  "balanceMenu";
                 if (!timeout()) {
-                    balanceMenu(p);
+                    operationData = new ArrayList<String>();
+                    operationData.add("4");//check balance operation code
+                    operationData.add(cardNum);//current client's card number
+                    String balSum = Main.sendTransactionData(operationData);
+                    balanceMenu(p, balSum);
                 }
                 else {
                     PINTimeout(p);
@@ -1004,7 +1008,11 @@ public class Screen extends JFrame {
                     }
                     else if (nextMenuTmp.equals("balanceMenu")){
                         currentMenu = nextMenuTmp;
-                        balanceMenu(p);
+                        operationData = new ArrayList<String>();
+                        operationData.add("4");//check balance operation code
+                        operationData.add(cardNum);//current client's card number
+                        String balSum = Main.sendTransactionData(operationData);
+                        balanceMenu(p, balSum);
                     }
                     else if (nextMenuTmp.equals("withdrawMenu")){
                         currentMenu = nextMenuTmp;
@@ -1410,10 +1418,10 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void balanceMenu(JPanel p){
+    private static void balanceMenu(JPanel p, String balSum){
         currentMenu = "balanceMenu";
         //TODO get balance via DB
-        JLabel l = new JLabel("Your balance is: $");
+        JLabel l = new JLabel("Your balance is: $" + balSum);
         l.setBounds(150,100,200, 30);
         p.add(l);
         p.setVisible(true);
