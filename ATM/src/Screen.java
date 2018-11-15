@@ -1065,6 +1065,10 @@ public class Screen extends JFrame {
                 nextMenu = "transferMenuSecond";
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
+                        operationData = new ArrayList<String>();
+                        operationData.add("1");//transfer operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(transferSumField.getText());//transfer sum
                         transferMenuSecond(p);
                     }
                     else {
@@ -1084,6 +1088,7 @@ public class Screen extends JFrame {
                 confirmingOp = "confirmTransfer";
                 if (!timeout()) {
                     if (transferRecipientNum.getText().length() == 16) {
+                        operationData.add(transferRecipientNum.getText());//recipient card number
                         confirmMenu(p, "confirmTransfer");
                     } else {
                         //failed to transfer
@@ -1131,18 +1136,47 @@ public class Screen extends JFrame {
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "successfulLoginMenu";
-                confirmingOp = "";
-                if (!timeout()){
-                    //check whether there are enough needed bills in ATM
-                    int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(2)));
-                    if (blsNeeded.length == 0){
-                        displayOpError(this, p, "Not enough bills for giving out such sum.");
-                        p.removeAll();
-                        p.updateUI();
-                        successfulLoginMenu(p);
-                    }
-                    else {
 
+                if (!timeout()){
+                    if (confirmingOp == "confirmWithdrawal") {
+                        //check whether there are enough needed bills in ATM
+                        int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(2)));
+                        if (blsNeeded.length == 0) {
+                            displayOpError(this, p, "Not enough bills for giving out such sum.");
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
+                        } else {
+
+                            //send data to server for processing
+                            String opRes = Main.sendTransactionData(operationData);
+                            if (opRes.contains("ERROR")) {
+                                displayOpError(this, p, opRes);
+                                p.removeAll();
+                                p.updateUI();
+                                successfulLoginMenu(p);
+                            } else {
+
+                                //change the values of the bills available => give out money
+                                updateBillsValues(blsNeeded);
+
+                                //TODO ...not implementing error during changing bills count in the ATM as of right now
+                                boolean rewritingBillsRes = writeBills();
+//                    if (!rewritingBillsRes) {
+//                        displayOpError(this, p);
+//                        p.removeAll();
+//                        p.updateUI();
+//                        successfulLoginMenu(p);
+//                    } else {
+                                displayOpSuccess(this, p, opRes);
+                                p.removeAll();
+                                p.updateUI();
+                                successfulLoginMenu(p);
+//                    }
+                            }
+                        }
+                    }
+                    else if (confirmingOp == "confirmTransfer"){
                         //send data to server for processing
                         String opRes = Main.sendTransactionData(operationData);
                         if (opRes.contains("ERROR")) {
@@ -1150,29 +1184,20 @@ public class Screen extends JFrame {
                             p.removeAll();
                             p.updateUI();
                             successfulLoginMenu(p);
-                        }
-                        else {
-
-                            //change the values of the bills available => give out money
-                            updateBillsValues(blsNeeded);
-
-                            //TODO ...not implementing error during changing bills count in the ATM as of right now
-                            boolean rewritingBillsRes = writeBills();
-//                    if (!rewritingBillsRes) {
-//                        displayOpError(this, p);
-//                        p.removeAll();
-//                        p.updateUI();
-//                        successfulLoginMenu(p);
-//                    } else {
+                        } else {
                             displayOpSuccess(this, p, opRes);
                             p.removeAll();
                             p.updateUI();
                             successfulLoginMenu(p);
-//                    }
                         }
+                        }
+                    else if (confirmingOp == "confirmBalances"){
+                        //TODO implement at some point
                     }
+                    confirmingOp = "";
                 }
                 else {
+                    confirmingOp = "";
                     PINTimeout(p);
                 }
             }
