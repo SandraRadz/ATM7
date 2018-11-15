@@ -1133,32 +1133,36 @@ public class Screen extends JFrame {
                         p.updateUI();
                         successfulLoginMenu(p);
                     }
+                    else {
 
-                    //send data to server for processing
-                    String opRes =  Main.sendTransactionData(operationData);
-                    if (opRes.contains("ERROR")) {
-                        displayOpError(this, p, opRes);
-                        p.removeAll();
-                        p.updateUI();
-                        successfulLoginMenu(p);
-                    }
+                        //send data to server for processing
+                        String opRes = Main.sendTransactionData(operationData);
+                        if (opRes.contains("ERROR")) {
+                            displayOpError(this, p, opRes);
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
+                        }
+                        else {
 
-                    //change the values of the bills available => give out money
-                    updateBillsValues(blsNeeded);
+                            //change the values of the bills available => give out money
+                            updateBillsValues(blsNeeded);
 
-                    //TODO ...not implementing error during changing bills as of right now
-                    boolean rewritingBillsRes = writeBills();
+                            //TODO ...not implementing error during changing bills count in the ATM as of right now
+                            boolean rewritingBillsRes = writeBills();
 //                    if (!rewritingBillsRes) {
 //                        displayOpError(this, p);
 //                        p.removeAll();
 //                        p.updateUI();
 //                        successfulLoginMenu(p);
 //                    } else {
-                        displayOpSuccess(this, p, opRes);
-                        p.removeAll();
-                        p.updateUI();
-                        successfulLoginMenu(p);
+                            displayOpSuccess(this, p, opRes);
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
 //                    }
+                        }
+                    }
                 }
                 else {
                     PINTimeout(p);
@@ -1190,6 +1194,10 @@ public class Screen extends JFrame {
         p2.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+        //add max amount of bills to ATM
+        //fillATMwMoney();
+
         //Read bills info.
         boolean getBillsInfo = readBills();
         if (!getBillsInfo){
@@ -1349,7 +1357,7 @@ public class Screen extends JFrame {
         JLabel lOptions = new JLabel("1 - Transfer");
         lOptions.setBounds(150,90,200, 30);
         p.add(lOptions);
-        JLabel lOptions2 = new JLabel("2 - Money excesses management");
+        JLabel lOptions2 = new JLabel("2 - Money excesses management"); //TODO Remove for now.
         lOptions2.setBounds(150,120,300, 30);
         p.add(lOptions2);
         JLabel lOptions3 = new JLabel("3 - Withdraw");
@@ -1415,9 +1423,57 @@ public class Screen extends JFrame {
         currentMenu = "withdrawMenu";
 
         JLabel l = new JLabel("Available banknotes are: ");
-        l.setBounds(150,60,200, 30);
+        l.setBounds(150,30,200, 30);
         p.add(l);
         //TODO list banknotes w/ amounts
+        JLabel l500 = new JLabel("$500 ", SwingConstants.CENTER);
+        l500.setBounds(90,60,35, 30);
+        if(bills[0] == 0){
+            l500.setOpaque(true);
+            l500.setBackground(Color.lightGray);
+        }
+        p.add(l500);
+
+        JLabel l200 = new JLabel("$200 ", SwingConstants.CENTER);
+        l200.setBounds(120,60,35, 30);
+        if(bills[1] == 0){
+            l200.setOpaque(true);
+            l200.setBackground(Color.lightGray);
+        }
+        p.add(l200);
+
+        JLabel l100 = new JLabel("$100 ", SwingConstants.CENTER);
+        l100.setBounds(150,60,35, 30);
+        if(bills[2] == 0){
+            l100.setOpaque(true);
+            l100.setBackground(Color.lightGray);
+        }
+        p.add(l100);
+
+        JLabel l50 = new JLabel("$50 ", SwingConstants.CENTER);
+        l50.setBounds(180,60,30, 30);
+        if(bills[3] == 0){
+            l50.setOpaque(true);
+            l50.setBackground(Color.lightGray);
+        }
+        p.add(l50);
+
+        JLabel l20 = new JLabel("$20 ", SwingConstants.CENTER);
+        l20.setBounds(210,60,30, 30);
+        if(bills[4] == 0){
+            l20.setOpaque(true);
+            l20.setBackground(Color.lightGray);
+        }
+        p.add(l20);
+
+        JLabel l10 = new JLabel("$10", SwingConstants.CENTER);
+        l10.setBounds(240,60,30, 30);
+        if(bills[5] == 0){
+            l10.setOpaque(true);
+            l10.setBackground(Color.lightGray);
+        }
+        p.add(l10);
+
         JLabel l1 = new JLabel("Enter amount for withdrawal: ");
         l1.setBounds(150,90,200, 30);
         p.add(l1);
@@ -1531,7 +1587,92 @@ public class Screen extends JFrame {
     private static int[] calcNeededBills(int sumReq){
 //TODO implement bills counting
         int[] blsNeeded = new int[6];
-        if(true){
+        int sumPossible = sumReq;
+
+        //available bills
+        int a500 = bills[0];
+        int a200 = bills[1];
+        int a100 = bills[2];
+        int a50 = bills[3];
+        int a20 = bills[4];
+        int a10 = bills[5];
+
+//        int r500 = 0;
+//        int r200 = 0;
+//        int r100 = 0;
+//        int r50 = 0;
+//        int r20 = 0;
+//        int r10 = 0;
+
+        //required bills
+        int w500 = sumPossible / 500;
+
+        for (int i = w500; i >= 0; i--){
+            if (a500 - w500 >= 0){
+                w500 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (500 * w500);
+
+        int w200 = sumPossible / 200;
+
+        for (int i = w200; i >= 0; i--){
+            if (a200 - w200 >= 0){
+                w200 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (200 * w200);
+
+        int w100 = sumPossible / 100;
+
+        for (int i = w100; i >= 0; i--){
+            if (a100 - w100 >= 0){
+                w100 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (100 * w100);
+
+        int w50 = sumPossible / 50;
+
+        for (int i = w50; i >= 0; i--){
+            if (a50 - w50 >= 0){
+                w50 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (50 * w50);
+
+        int w20 = sumPossible / 20;
+
+        for (int i = w20; i >= 0; i--){
+            if (a20 - w20 >= 0){
+                w20 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (20 * w20);
+
+        int w10 = sumPossible / 10;
+
+        for (int i = w10; i >= 0; i--){
+            if (a10 - w10 >= 0){
+                w10 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (10 * w10);
+
+        blsNeeded[0] = w500;
+        blsNeeded[1] = w200;
+        blsNeeded[2] = w100;
+        blsNeeded[3] = w50;
+        blsNeeded[4] = w20;
+        blsNeeded[5] = w10;
+
+        if(sumPossible == 0){
 
             return blsNeeded;
         }
@@ -1569,6 +1710,7 @@ public class Screen extends JFrame {
     }
 
     private static void displayOpError(Screen sc, JPanel p, String opRes){
+        operationData = new ArrayList<String>();
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
         dialog.setSize(p.getWidth(), p.getHeight());
@@ -1589,6 +1731,7 @@ public class Screen extends JFrame {
     }
 
     private static void displayOpError(Screen sc, JPanel p, String state, String diagn){
+        operationData = new ArrayList<String>();
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
         dialog.setSize(p.getWidth(), p.getHeight());
@@ -1612,11 +1755,11 @@ public class Screen extends JFrame {
         }
         return false;
     }
+
+    private static void fillATMwMoney(){
+        for (int i = 5; i < 11; i++){
+            bills[(i-5)] = i*100;
+        }
+        writeBills();
+    }
 }
-
-//RESERVED CODE
-
-//                        for (int i = 5; i < 11; i++){
-//                            bills[(i-5)] = i*100;
-//                        }
-//                        writeBills();
