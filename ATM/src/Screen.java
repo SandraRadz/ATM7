@@ -337,17 +337,17 @@ public class Screen extends JFrame {
             else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
                 card.setText(card.getText()+"2");
             }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu =  "cashBalances";
-                if (!timeout()) {
-                    cashBalances(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
+//            else if(currentMenu.equals("successfulLoginMenu")){
+//                p.removeAll();
+//                p.updateUI();
+//                nextMenu =  "cashBalances";
+//                if (!timeout()) {
+//                    cashBalances(p);
+//                }
+//                else {
+//                    PINTimeout(p);
+//                }
+//            }
             else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"2");
             }
