@@ -31,6 +31,7 @@ public class Screen extends JFrame {
     static private JPasswordField pinTimeout;
     static private JTextArea card;
     static private JTextArea sum;
+    static private JTextField userPin;
     static private JTextField transferSumField;
     static private JTextField transferRecipientNum;
     static private JTextField withdrawSumField;
@@ -282,6 +283,7 @@ public class Screen extends JFrame {
         b1.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"1");
+                userPin.setText(userPin.getText()+"1");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"1");
@@ -330,6 +332,7 @@ public class Screen extends JFrame {
         b2.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"2");
+                userPin.setText(userPin.getText()+"2");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"2");
@@ -378,6 +381,7 @@ public class Screen extends JFrame {
         b3.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"3");
+                userPin.setText(userPin.getText()+"3");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"3");
@@ -426,6 +430,7 @@ public class Screen extends JFrame {
         b4.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"4");
+                userPin.setText(userPin.getText()+"4");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"4");
@@ -478,6 +483,7 @@ public class Screen extends JFrame {
         b5.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"5");
+                userPin.setText(userPin.getText()+"5");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"5");
@@ -517,6 +523,7 @@ public class Screen extends JFrame {
         b6.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"6");
+                userPin.setText(userPin.getText()+"6");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"6");
@@ -556,6 +563,7 @@ public class Screen extends JFrame {
         b7.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"7");
+                userPin.setText(userPin.getText()+"7");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"7");
@@ -595,6 +603,7 @@ public class Screen extends JFrame {
         b8.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"8");
+                userPin.setText(userPin.getText()+"8");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"8");
@@ -634,6 +643,7 @@ public class Screen extends JFrame {
         b9.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"9");
+                userPin.setText(userPin.getText()+"9");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"9");
@@ -799,6 +809,7 @@ public class Screen extends JFrame {
         cancel.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN")){
                 pin.setText("");
+                userPin.setText("");
             }
             if (currentMenu.equals("PINTimeout")) {
                 pinTimeout.setText("");
@@ -909,6 +920,7 @@ public class Screen extends JFrame {
                 String str = pin.getText();
                 if (str != null && str.length() > 0) {
                     pin.setText(str.substring(0, str.length() - 1));
+                    userPin.setText(userPin.getText().substring(0,userPin.getText().length()-1));
                 }
             }
             else if (currentMenu.equals("PINTimeout")) {
@@ -968,10 +980,17 @@ public class Screen extends JFrame {
         ok.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN")) {
                 if (pin.getText().length() == 4) {
+                    Password password = new Password(userPin.getText());
                     p.removeAll();
                     p.updateUI();
                     lastInteractionTime = Instant.now().getEpochSecond();
+                    operationData = new ArrayList<String>();
+                    operationData.add("0");//check pin
+                    operationData.add(password.getHash()); //pin hash
+                    String balSum = Main.sendTransactionData(operationData);
+                    //TODO if pin hash equivalent to hash from DB then successfulLoginMenu(p); else error / bad pin etc
                     successfulLoginMenu(p);
+
                 }
             }
             else if (currentMenu.equals("PINTimeout")) {
