@@ -1,9 +1,11 @@
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Main {
     private static DataOutputStream out;
+    private static DataInputStream in;
 
     public static void main(String[] args) throws Exception {
         Screen c = new Screen();
@@ -23,7 +25,7 @@ public class Main {
             OutputStream sout = socket.getOutputStream();
 
             // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
-            DataInputStream in = new DataInputStream(sin);
+            in = new DataInputStream(sin);
             out = new DataOutputStream(sout);
 
             // Создаем поток для чтения с клавиатуры.
@@ -47,27 +49,44 @@ public class Main {
         }
 
     }
-    public static boolean sendTransactionData(int data[]){
-        //ALGORITHM:
-        //1) sending incoming array length;
-        //2) sending ATM operation's code (1 - ..., 2 -, 3 - withdrawal).
-        //3) the server should process data accordingly to the operation's code
-        try {
-            out.writeInt(data.length);
-            for (int i = 0; i < data.length; i++) {
-                out.writeInt(data[i]);
+//    public static boolean sendTransactionData(int data[]){
+//        //ALGORITHM:
+//        //1) sending incoming array length;
+//        //2) sending ATM operation's code (1 - ..., 2 -, 3 - withdrawal).
+//        //3) the server should process data accordingly to the operation's code
+//        try {
+//            out.writeInt(data.length);
+//            for (int i = 0; i < data.length; i++) {
+//                out.writeInt(data[i]);
+//            }
+//        } catch (IOException ex){
+//            System.err.println("Data streaming to server error!");
+//        }
+//
+//        //transaction successful; server responded positively
+//        if (true){
+//            return true;
+//        }
+//        //transaction unsuccessful
+//        else {
+//            return false;
+//        }
+//    }
+    public static String sendTransactionData(ArrayList<String> data){
+        try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(data);
+
+        while (true){
+            String opRes = in.readUTF();
+            if (!opRes.equals(null)){
+                return opRes;
             }
+        }
+
         } catch (IOException ex){
             System.err.println("Data streaming to server error!");
         }
-
-        //transaction successful; server responded positively
-        if (true){
-            return true;
-        }
-        //transaction unsuccessful
-        else {
-            return false;
-        }
+        return "";
+        //return "ERROR sending data to server";
     }
 }

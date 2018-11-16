@@ -9,10 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,7 +37,14 @@ public class Screen extends JFrame {
     static private JTextArea date;
     static private long lastInteractionTime;
 
-    static private int[] operationData;
+    //static private int[] operationData;
+    static private ArrayList<String> operationData;
+
+    static private String cardNum = "1616161616161616"; //16 digit; tmp number
+
+    //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
+    //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
+    static private int[] bills = new int[6];
 
     public Screen () throws Exception {
         this.setTitle("ATM 7");
@@ -293,10 +300,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"1");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"1");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -304,7 +311,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"1");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -330,21 +337,21 @@ public class Screen extends JFrame {
             else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
                 card.setText(card.getText()+"2");
             }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu =  "cashBalances";
-                if (!timeout()) {
-                    cashBalances(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("cashBalances_sum")){
+//            else if(currentMenu.equals("successfulLoginMenu")){
+//                p.removeAll();
+//                p.updateUI();
+//                nextMenu =  "cashBalances";
+//                if (!timeout()) {
+//                    cashBalances(p);
+//                }
+//                else {
+//                    PINTimeout(p);
+//                }
+//            }
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"2");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"2");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -352,7 +359,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"2");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -389,10 +396,10 @@ public class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"3");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"3");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -400,7 +407,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"3");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -431,16 +438,20 @@ public class Screen extends JFrame {
                 p.updateUI();
                 nextMenu =  "balanceMenu";
                 if (!timeout()) {
-                    balanceMenu(p);
+                    operationData = new ArrayList<String>();
+                    operationData.add("4");//check balance operation code
+                    operationData.add(cardNum);//current client's card number
+                    String balSum = Main.sendTransactionData(operationData);
+                    balanceMenu(p, balSum);
                 }
                 else {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"4");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"4");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -448,7 +459,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"4");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -476,10 +487,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"5");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"5");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -487,7 +498,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"5");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -515,10 +526,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"6");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"6");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -526,7 +537,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"6");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -554,10 +565,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"7");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"7");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -565,7 +576,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"7");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -593,10 +604,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"8");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"8");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -604,7 +615,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"8");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -632,10 +643,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum")){
+            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
                 sum.setText(sum.getText()+"9");
             }
-            else if (currentMenu.equals("transferMenu")){
+            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
                 transferSumField.setText(transferSumField.getText()+"9");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -643,7 +654,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
                 withdrawSumField.setText(withdrawSumField.getText()+"9");
             }
             else if(currentMenu.equals("confirmMenu")){
@@ -729,10 +740,10 @@ public class Screen extends JFrame {
             }
             else if(currentMenu.equals("successfulLoginMenu")){
             }
-            else if (currentMenu.equals("cashBalances_sum") && !sum.getText().equals("") && sum.getText()!= null) {
+            else if (currentMenu.equals("cashBalances_sum") && !sum.getText().equals("") && sum.getText().length() < 6) {
                 sum.setText(sum.getText()+"0");
             }
-            else if(currentMenu.equals("transferMenu") && !transferSumField.getText().equals("")) {
+            else if(currentMenu.equals("transferMenu") && !transferSumField.getText().equals("") && transferSumField.getText().length() < 6) {
                 transferSumField.setText(transferSumField.getText() + "0");
             }
             else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
@@ -740,7 +751,7 @@ public class Screen extends JFrame {
             }
             else if (currentMenu.equals("balanceMenu")){
             }
-            else if (currentMenu.equals("withdrawMenu")){
+            else if (currentMenu.equals("withdrawMenu") && !withdrawSumField.getText().equals("") && withdrawSumField.getText().length() < 6){
                 if(!withdrawSumField.getText().equals("")) {
                     withdrawSumField.setText(withdrawSumField.getText() + "0");
                 }
@@ -997,7 +1008,11 @@ public class Screen extends JFrame {
                     }
                     else if (nextMenuTmp.equals("balanceMenu")){
                         currentMenu = nextMenuTmp;
-                        balanceMenu(p);
+                        operationData = new ArrayList<String>();
+                        operationData.add("4");//check balance operation code
+                        operationData.add(cardNum);//current client's card number
+                        String balSum = Main.sendTransactionData(operationData);
+                        balanceMenu(p, balSum);
                     }
                     else if (nextMenuTmp.equals("withdrawMenu")){
                         currentMenu = nextMenuTmp;
@@ -1050,6 +1065,10 @@ public class Screen extends JFrame {
                 nextMenu = "transferMenuSecond";
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
+                        operationData = new ArrayList<String>();
+                        operationData.add("1");//transfer operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(transferSumField.getText());//transfer sum
                         transferMenuSecond(p);
                     }
                     else {
@@ -1069,6 +1088,7 @@ public class Screen extends JFrame {
                 confirmingOp = "confirmTransfer";
                 if (!timeout()) {
                     if (transferRecipientNum.getText().length() == 16) {
+                        operationData.add(transferRecipientNum.getText());//recipient card number
                         confirmMenu(p, "confirmTransfer");
                     } else {
                         //failed to transfer
@@ -1097,9 +1117,10 @@ public class Screen extends JFrame {
                 confirmingOp = "confirmWithdrawal";
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
-                        operationData = new int[2];
-                        operationData[0] = 3; //withdrawal operation code
-                        operationData[1] = Integer.parseInt(withdrawSumField.getText()); //withdrawal sum
+                        operationData = new ArrayList<String>();
+                        operationData.add("3");//withdrawal operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(withdrawSumField.getText());//withdrawal sum
                         confirmMenu(p, "confirmWithdrawal");
                     } else {
                         //failed to withdraw
@@ -1115,47 +1136,68 @@ public class Screen extends JFrame {
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "successfulLoginMenu";
-                confirmingOp = "";
-                if (!timeout()){
-                    boolean opRes =  Main.sendTransactionData(operationData);
-                    if (opRes){
-                        //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        final JDialog dialog = new JDialog(this, "Success", true);
-                        dialog.setSize(200,200);
-                        dialog.setLocationRelativeTo(null);
-                        JLabel succ = new JLabel("Operation successful!", SwingConstants.CENTER);
-                        dialog.add(succ);
-                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-                        s.schedule(new Runnable() {
-                            public void run() {
-                                dialog.setVisible(false); //should be invoked on the EDT
-                                dialog.dispose();
-                                //successfulLoginMenu(p);
-                            }
-                        }, 2, TimeUnit.SECONDS);
-                        dialog.setVisible(true);
 
-                    } else {
-                        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
-                        final JDialog dialog = new JDialog(this, "Error", true);
-                        dialog.setSize(200,200);
-                        dialog.setLocationRelativeTo(null);
-                        JLabel succ = new JLabel("Operation error!", SwingConstants.CENTER);
-                        dialog.add(succ);
-                        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
-                        s.schedule(new Runnable() {
-                            public void run() {
-                                dialog.setVisible(false); //should be invoked on the EDT
-                                dialog.dispose();
+                if (!timeout()){
+                    if (confirmingOp == "confirmWithdrawal") {
+                        //check whether there are enough needed bills in ATM
+                        int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(2)));
+                        if (blsNeeded.length == 0) {
+                            displayOpError(this, p, "Not enough bills for giving out such sum.");
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
+                        } else {
+
+                            //send data to server for processing
+                            String opRes = Main.sendTransactionData(operationData);
+                            if (opRes.contains("ERROR")) {
+                                displayOpError(this, p, opRes);
+                                p.removeAll();
+                                p.updateUI();
+                                successfulLoginMenu(p);
+                            } else {
+
+                                //change the values of the bills available => give out money
+                                updateBillsValues(blsNeeded);
+
+                                //TODO ...not implementing error during changing bills count in the ATM as of right now
+                                boolean rewritingBillsRes = writeBills();
+//                    if (!rewritingBillsRes) {
+//                        displayOpError(this, p);
+//                        p.removeAll();
+//                        p.updateUI();
+//                        successfulLoginMenu(p);
+//                    } else {
+                                displayOpSuccess(this, p, opRes);
+                                p.removeAll();
+                                p.updateUI();
+                                successfulLoginMenu(p);
+//                    }
                             }
-                        }, 2, TimeUnit.SECONDS);
-                        dialog.setVisible(true);
+                        }
                     }
-                    p.removeAll();
-                    p.updateUI();
-                    successfulLoginMenu(p);
+                    else if (confirmingOp == "confirmTransfer"){
+                        //send data to server for processing
+                        String opRes = Main.sendTransactionData(operationData);
+                        if (opRes.contains("ERROR")) {
+                            displayOpError(this, p, opRes);
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
+                        } else {
+                            displayOpSuccess(this, p, opRes);
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
+                        }
+                        }
+                    else if (confirmingOp == "confirmBalances"){
+                        //TODO implement at some point
+                    }
+                    confirmingOp = "";
                 }
                 else {
+                    confirmingOp = "";
                     PINTimeout(p);
                 }
             }
@@ -1180,12 +1222,21 @@ public class Screen extends JFrame {
 
 
         PIN(p);
-
         //p.setVisible(true);
         p1.setVisible(true);
         p2.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+        //add max amount of bills to ATM
+        //fillATMwMoney();
+
+        //Read bills info.
+        boolean getBillsInfo = readBills();
+        if (!getBillsInfo){
+            displayOpError(this, p, "NON_OPERATIONAL_STATE", "CALL_ATM_SERVICE");
+            //+ alt+f4 should exit program fully
+        }
     }
 
     //PIN entering
@@ -1202,7 +1253,6 @@ public class Screen extends JFrame {
         //pin.setHighlighter(null);
         pin.setFocusable(false);
         pin.setEditable(false);
-        //pin.getCaret().deinstall( pin );
         p.add(pin);
         p.setVisible(true);
     }
@@ -1340,7 +1390,7 @@ public class Screen extends JFrame {
         JLabel lOptions = new JLabel("1 - Transfer");
         lOptions.setBounds(150,90,200, 30);
         p.add(lOptions);
-        JLabel lOptions2 = new JLabel("2 - Money excesses management");
+        JLabel lOptions2 = new JLabel("2 - Money excesses management"); //TODO Remove for now.
         lOptions2.setBounds(150,120,300, 30);
         p.add(lOptions2);
         JLabel lOptions3 = new JLabel("3 - Withdraw");
@@ -1393,10 +1443,10 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void balanceMenu(JPanel p){
+    private static void balanceMenu(JPanel p, String balSum){
         currentMenu = "balanceMenu";
         //TODO get balance via DB
-        JLabel l = new JLabel("Your balance is: $");
+        JLabel l = new JLabel("Your balance is: $" + balSum);
         l.setBounds(150,100,200, 30);
         p.add(l);
         p.setVisible(true);
@@ -1406,9 +1456,57 @@ public class Screen extends JFrame {
         currentMenu = "withdrawMenu";
 
         JLabel l = new JLabel("Available banknotes are: ");
-        l.setBounds(150,60,200, 30);
+        l.setBounds(150,30,200, 30);
         p.add(l);
         //TODO list banknotes w/ amounts
+        JLabel l500 = new JLabel("$500 ", SwingConstants.CENTER);
+        l500.setBounds(90,60,35, 30);
+        if(bills[0] == 0){
+            l500.setOpaque(true);
+            l500.setBackground(Color.lightGray);
+        }
+        p.add(l500);
+
+        JLabel l200 = new JLabel("$200 ", SwingConstants.CENTER);
+        l200.setBounds(120,60,35, 30);
+        if(bills[1] == 0){
+            l200.setOpaque(true);
+            l200.setBackground(Color.lightGray);
+        }
+        p.add(l200);
+
+        JLabel l100 = new JLabel("$100 ", SwingConstants.CENTER);
+        l100.setBounds(150,60,35, 30);
+        if(bills[2] == 0){
+            l100.setOpaque(true);
+            l100.setBackground(Color.lightGray);
+        }
+        p.add(l100);
+
+        JLabel l50 = new JLabel("$50 ", SwingConstants.CENTER);
+        l50.setBounds(180,60,30, 30);
+        if(bills[3] == 0){
+            l50.setOpaque(true);
+            l50.setBackground(Color.lightGray);
+        }
+        p.add(l50);
+
+        JLabel l20 = new JLabel("$20 ", SwingConstants.CENTER);
+        l20.setBounds(210,60,30, 30);
+        if(bills[4] == 0){
+            l20.setOpaque(true);
+            l20.setBackground(Color.lightGray);
+        }
+        p.add(l20);
+
+        JLabel l10 = new JLabel("$10", SwingConstants.CENTER);
+        l10.setBounds(240,60,30, 30);
+        if(bills[5] == 0){
+            l10.setOpaque(true);
+            l10.setBackground(Color.lightGray);
+        }
+        p.add(l10);
+
         JLabel l1 = new JLabel("Enter amount for withdrawal: ");
         l1.setBounds(150,90,200, 30);
         p.add(l1);
@@ -1430,8 +1528,9 @@ public class Screen extends JFrame {
         String operation = s;
         //TODO get corresponding data from DB
         if (operation.equals("confirmWithdrawal")) {
-            int sum = operationData[1];
-            l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
+            String sum = operationData.get(2);
+            //l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
+            l = new JLabel("You are about to withdraw: $" + sum);
             l.setBounds(150, 60, 320, 30);
             p.add(l);
         }
@@ -1484,6 +1583,203 @@ public class Screen extends JFrame {
         }
     }
 
+    private static boolean readBills(){
+        try (FileInputStream fis = new FileInputStream("bills.ser")){
+            try (ObjectInputStream ois = new ObjectInputStream(fis)){
+                bills = ((int[]) ois.readObject());
+            } catch (IOException ex){
+                return false;
+            } catch (ClassNotFoundException ex1){
+                return false;
+            }
+       } catch (FileNotFoundException ex){
+           //throw Error = new Error("Error: Can't read bills");
+            return false;
+       } catch (IOException ex1){
+            return false;
+       }
+        return true;
+    }
+
+    private static boolean writeBills(){
+        try (FileOutputStream fos = new FileOutputStream("bills.ser")){
+            try (ObjectOutputStream oos = new ObjectOutputStream(fos)){
+                oos.writeObject(bills);
+            } catch (IOException ex) {
+                return false;
+            }
+        } catch (FileNotFoundException ex){
+            //throw Error = new Error("Error: Can't read bills");
+            return false;
+        } catch (IOException ex1){
+            return false;
+        }
+        return true;
+    }
+
+    private static int[] calcNeededBills(int sumReq){
+//TODO implement bills counting
+        int[] blsNeeded = new int[6];
+        int sumPossible = sumReq;
+
+        //available bills
+        int a500 = bills[0];
+        int a200 = bills[1];
+        int a100 = bills[2];
+        int a50 = bills[3];
+        int a20 = bills[4];
+        int a10 = bills[5];
+
+//        int r500 = 0;
+//        int r200 = 0;
+//        int r100 = 0;
+//        int r50 = 0;
+//        int r20 = 0;
+//        int r10 = 0;
+
+        //required bills
+        int w500 = sumPossible / 500;
+
+        for (int i = w500; i >= 0; i--){
+            if (a500 - w500 >= 0){
+                w500 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (500 * w500);
+
+        int w200 = sumPossible / 200;
+
+        for (int i = w200; i >= 0; i--){
+            if (a200 - w200 >= 0){
+                w200 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (200 * w200);
+
+        int w100 = sumPossible / 100;
+
+        for (int i = w100; i >= 0; i--){
+            if (a100 - w100 >= 0){
+                w100 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (100 * w100);
+
+        int w50 = sumPossible / 50;
+
+        for (int i = w50; i >= 0; i--){
+            if (a50 - w50 >= 0){
+                w50 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (50 * w50);
+
+        int w20 = sumPossible / 20;
+
+        for (int i = w20; i >= 0; i--){
+            if (a20 - w20 >= 0){
+                w20 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (20 * w20);
+
+        int w10 = sumPossible / 10;
+
+        for (int i = w10; i >= 0; i--){
+            if (a10 - w10 >= 0){
+                w10 = i;
+                break;
+            }
+        }
+        sumPossible = sumPossible - (10 * w10);
+
+        blsNeeded[0] = w500;
+        blsNeeded[1] = w200;
+        blsNeeded[2] = w100;
+        blsNeeded[3] = w50;
+        blsNeeded[4] = w20;
+        blsNeeded[5] = w10;
+
+        if(sumPossible == 0){
+
+            return blsNeeded;
+        }
+        return new int[0];
+    }
+
+    private static void updateBillsValues(int[] blsNeeded){
+        for (int i = 0; i < blsNeeded.length; i++){
+            bills[i] = bills[i] - blsNeeded[i];
+        }
+        return;
+    }
+
+    private static void displayOpSuccess(Screen sc, JPanel p, String opRes) {
+        //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Success", true);
+        //dialog.setSize(200,200);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel succ = new JLabel("Operation successful: " + opRes, SwingConstants.CENTER);
+        succ.setBackground(Color.WHITE);
+        succ.setForeground(new Color(0,153,0));
+        dialog.setUndecorated(true);
+        dialog.add(succ);
+
+        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+        s.schedule(new Runnable() {
+            public void run() {
+                dialog.setVisible(false); //should be invoked on the EDT
+                dialog.dispose();
+                //successfulLoginMenu(p);
+            }
+        }, 2, TimeUnit.SECONDS);
+        dialog.setVisible(true);
+    }
+
+    private static void displayOpError(Screen sc, JPanel p, String opRes){
+        operationData = new ArrayList<String>();
+        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Error", true);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel err = new JLabel("Operation error: " + opRes, SwingConstants.CENTER);
+        err.setBackground(Color.WHITE);
+        err.setForeground(new Color(204,0,0));
+        dialog.setUndecorated(true);
+        dialog.add(err);
+        ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
+        s.schedule(new Runnable() {
+            public void run() {
+                dialog.setVisible(false); //should be invoked on the EDT
+                dialog.dispose();
+            }
+        }, 2, TimeUnit.SECONDS);
+        dialog.setVisible(true);
+    }
+
+    private static void displayOpError(Screen sc, JPanel p, String state, String diagn){
+        operationData = new ArrayList<String>();
+        //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
+        final JDialog dialog = new JDialog(sc, "Error", true);
+        dialog.setSize(p.getWidth(), p.getHeight());
+        dialog.setLocationRelativeTo(p);
+        JLabel err = new JLabel("Bills reading error: " + state, SwingConstants.CENTER);
+        err.setBackground(Color.WHITE);
+        err.setForeground(new Color(204,0,0));
+        dialog.setUndecorated(true);
+        dialog.add(err);
+        dialog.setVisible(true);
+//        while(true){
+//
+//        }
+    }
+
     private static boolean timeout(){
         long currTime = Instant.now().getEpochSecond();
         if ((currTime - lastInteractionTime) > 300) {
@@ -1491,5 +1787,12 @@ public class Screen extends JFrame {
             return true;
         }
         return false;
+    }
+
+    private static void fillATMwMoney(){
+        for (int i = 5; i < 11; i++){
+            bills[(i-5)] = i*100;
+        }
+        writeBills();
     }
 }
