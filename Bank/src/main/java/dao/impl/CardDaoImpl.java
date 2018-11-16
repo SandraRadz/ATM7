@@ -1,38 +1,85 @@
 package dao.impl;
 
-import dao.CardDao;
-import entity.Card;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+//import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.Statement;
 
+import dao.CardDao;
+
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
 
 public class CardDaoImpl implements CardDao {
-    private JdbcTemplate jdbcTemplate;
-    private static final String GET = "SELECT * FROM Card WHERE cardNumber=? AND pin=?";
 
+    // JDBC URL, username and password of MySQL server
+    private static final String url = "jdbc:mysql://localhost:3306/bankATM";
+    private static final String user = "root";
+    private static final String password = "root";
 
-    @Override
-    public Card get(long cardNum, int pin) {
-        //return jdbcTemplate.queryForObject(GET, mapper, cardNum, pin);
-       return null;
+    // JDBC variables for opening and managing connection
+    private static Connection con;
+    private static Statement stmt;
+    private static ResultSet rs;
+
+    public CardDaoImpl(){
+            // opening database connection to MySQL server
+        try {
+            con = DriverManager.getConnection(url, user, password);
+          // getting Statement object to execute query
+            stmt = con.createStatement();
+        } catch (SQLException e) {
+        e.printStackTrace();
+    }
     }
 
     @Override
-    public boolean ifExists(long cardNum, int pin) {
-
-        return false;
-    }
-
-    private RowMapper<Card> mapper = new RowMapper<Card>() {
-        public Card mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Card card = new Card();
-            card.setCardNumber(rs.getLong("number"));
-            card.setPin(rs.getInt("pin"));
-            card.setSum(rs.getDouble("sum"));
-            card.setUser(rs.getString("user"));
-            return null;
+    public boolean ifExists(String cardNum, String pin) {
+        boolean res=false;
+        try {
+            String query ="SELECT COUNT(*) FROM card AS exist WHERE number = '" + cardNum+"' AND pin = '"+ pin+"';";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+               res = (rs.getInt(1)==0?false:true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    };
+        return res;
+    }
+
+    @Override
+    public double getSum(String cardNum, String pin) {
+        double res=0;
+        try {
+            String query ="SELECT sum FROM card AS exist WHERE number = '" + cardNum+"' AND pin = '"+ pin+"';";
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                res = (rs.getDouble(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    @Override
+    public void takeCash(String cardNum, String pin, double sum) {
+        double oldSum = getSum(cardNum, pin);
+        double newsum=oldSum-sum;
+        
+    }
+
+    @Override
+    public void makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
+
+    }
+
+        public void close() {
+            try { con.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
+            try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+    }
+
 }

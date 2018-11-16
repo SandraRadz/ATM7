@@ -12,6 +12,7 @@ import java.sql.SQLException;
 public class WriteOffImpl implements WriteOffDao {
     private JdbcTemplate jdbcTemplate;
     private static final String GET = "SELECT * FROM WriteOff WHERE charge_id=?";
+    private static final String INSERT = "SELECT * FROM WriteOff WHERE charge_id=?";
 
     @Override
     public WriteOff get(long id) {
@@ -19,9 +20,8 @@ public class WriteOffImpl implements WriteOffDao {
     }
 
     @Override
-    public int insert(WriteOff user) {
-        //return jdbcTemplate.update(INSERT, user.getLogin(), user.getPswd(), user.getAuthRole(), user.getEnabled(), user.getLogin());
-        return 0;
+    public int insert(WriteOff writeOff) {
+        return jdbcTemplate.update(INSERT, writeOff.getId(), writeOff.getSum(), writeOff.getCardSender(), writeOff.getCardReceiver());
     }
 
     @Override
@@ -35,9 +35,16 @@ public class WriteOffImpl implements WriteOffDao {
             writeOff.setId(rs.getInt("id"));
             writeOff.setSum(rs.getDouble("sum"));
             Card cardFrom = new Card();
-            cardFrom.setCardNumber(rs.getLong("number"));
+            cardFrom.setCardNumber(rs.getLong("numberFrom"));
+            cardFrom.setPin(rs.getInt("pinFrom"));
+            cardFrom.setSum(rs.getDouble("sumFrom"));
+            cardFrom.setUser(rs.getString("userFrom"));
             Card cardTo = new Card();
-            cardTo.setCardNumber(rs.getLong("number"));
+            cardTo.setCardNumber(rs.getLong("numberTo"));
+            cardTo.setCardNumber(rs.getLong("numberTo"));
+            cardTo.setPin(rs.getInt("pinTo"));
+            cardTo.setSum(rs.getDouble("sumTo"));
+            cardTo.setUser(rs.getString("userTo"));
             return null;
         }
     };
