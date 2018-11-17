@@ -477,8 +477,7 @@ public class Screen extends JFrame {
                         balanceMenu(p, balSum);
                     }
                     else {
-                        //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
-                        displayOpError(this, p, balSum);
+                        displayOpError(this, p, "Failed to transfer data.");
                     }
                 }
                 else {
@@ -1027,8 +1026,8 @@ public class Screen extends JFrame {
                     }
                     else {
                         userPin.setText("");
-                        //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
-                        displayOpError(this, p, confPIN);
+                        displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                        //displayOpError(this, p, confPIN);
                         p.removeAll();
                         p.updateUI();
                         PIN(p);
@@ -1093,8 +1092,7 @@ public class Screen extends JFrame {
                             balanceMenu(p, balSum);
                         }
                         else {
-                            //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
-                            displayOpError(this, p, balSum);
+                            displayOpError(this, p, "Failed to transfer data.");
                         }
                         balanceMenu(p, balSum);
                     }
