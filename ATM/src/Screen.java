@@ -45,7 +45,7 @@ public class Screen extends JFrame {
     //static private int[] operationData;
     static private ArrayList<String> operationData;
 
-    static private String cardNum = "2222222222222222"; //16 digit; tmp number
+    static private String cardNum = "2222222222222221"; //16 digit; tmp number
 
     //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
@@ -452,11 +452,17 @@ public class Screen extends JFrame {
                 nextMenu =  "balanceMenu";
                 if (!timeout()) {
                     operationData = new ArrayList<String>();
-                    operationData.add("4");//check balance operation code
+                    operationData.add("3");//check balance operation code
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                     String balSum = BankConnection.sendTransactionData(operationData);
-                    balanceMenu(p, balSum);
+                    if (!balSum.contains("fail")){
+                        balanceMenu(p, balSum);
+                    }
+                    else {
+                        //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                        displayOpError(this, p, balSum);
+                    }
                 }
                 else {
                     PINTimeout(p);
@@ -993,15 +999,18 @@ public class Screen extends JFrame {
                     p.updateUI();
                     lastInteractionTime = Instant.now().getEpochSecond();
                     operationData = new ArrayList<String>();
-                    operationData.add("1");//check pin
+                    operationData.add("0");//check pin
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                     String confPIN = BankConnection.sendTransactionData(operationData);
-                    if (confPIN.equals("true")){
+//                    if (confPIN.equals("true")){
+//                    if (confPIN.equals("done")){
+                    if (!confPIN.contains("fail")){
                        successfulLoginMenu(p);
                     }
                     else {
-                        displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                        //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                        displayOpError(this, p, confPIN);
                     }
 
                 }
@@ -1041,10 +1050,17 @@ public class Screen extends JFrame {
                     else if (nextMenuTmp.equals("balanceMenu")){
                         currentMenu = nextMenuTmp;
                         operationData = new ArrayList<String>();
-                        operationData.add("4");//check balance operation code
+                        operationData.add("3");//check balance operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         String balSum = BankConnection.sendTransactionData(operationData);
+                        if (!balSum.contains("fail")){
+                            balanceMenu(p, balSum);
+                        }
+                        else {
+                            //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                            displayOpError(this, p, balSum);
+                        }
                         balanceMenu(p, balSum);
                     }
                     else if (nextMenuTmp.equals("withdrawMenu")){
@@ -1099,7 +1115,7 @@ public class Screen extends JFrame {
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
                         operationData = new ArrayList<String>();
-                        operationData.add("2");//transfer operation code
+                        operationData.add("1");//transfer operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         operationData.add(transferSumField.getText());//transfer sum
@@ -1152,7 +1168,7 @@ public class Screen extends JFrame {
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
                         operationData = new ArrayList<String>();
-                        operationData.add("3");//withdrawal operation code
+                        operationData.add("2");//withdrawal operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         operationData.add(withdrawSumField.getText());//withdrawal sum
@@ -1185,7 +1201,7 @@ public class Screen extends JFrame {
 
                             //send data to server for processing
                             String opRes = BankConnection.sendTransactionData(operationData);
-                            if (opRes.contains("ERROR")) {
+                            if (opRes.contains("fail")) {
                                 displayOpError(this, p, opRes);
                                 p.removeAll();
                                 p.updateUI();
@@ -1214,7 +1230,7 @@ public class Screen extends JFrame {
                     else if (confirmingOp == "confirmTransfer"){
                         //send data to server for processing
                         String opRes = BankConnection.sendTransactionData(operationData);
-                        if (opRes.contains("ERROR")) {
+                        if (opRes.contains("fail")) {
                             displayOpError(this, p, opRes);
                             p.removeAll();
                             p.updateUI();
