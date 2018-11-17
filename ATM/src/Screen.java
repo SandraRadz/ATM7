@@ -10,6 +10,9 @@ import javax.swing.JPasswordField;
 import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Screen extends JFrame {
 
+
     static private String currentMenu = "";
     static private String confirmingOp = "";
     static private String nextMenu = "";
@@ -31,7 +35,7 @@ public class Screen extends JFrame {
     static private JPasswordField pinTimeout;
     static private JTextArea card;
     static private JTextArea sum;
-    static private JTextField userPin;
+    static private JTextField userPin = new JTextField();
     static private JTextField transferSumField;
     static private JTextField transferRecipientNum;
     static private JTextField withdrawSumField;
@@ -41,7 +45,7 @@ public class Screen extends JFrame {
     //static private int[] operationData;
     static private ArrayList<String> operationData;
 
-    static private String cardNum = "1616161616161616"; //16 digit; tmp number
+    static private String cardNum = "2222222222222222"; //16 digit; tmp number
 
     //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
@@ -61,6 +65,10 @@ public class Screen extends JFrame {
         catch(Exception e){}
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+
 
         JPanel p = new JPanel();
         p.setLayout(null);
@@ -447,7 +455,7 @@ public class Screen extends JFrame {
                     operationData.add("4");//check balance operation code
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String balSum = Main.sendTransactionData(operationData);
+                    String balSum = BankConnection.sendTransactionData(operationData);
                     balanceMenu(p, balSum);
                 }
                 else {
@@ -988,7 +996,7 @@ public class Screen extends JFrame {
                     operationData.add("1");//check pin
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String confPIN = Main.sendTransactionData(operationData);
+                    String confPIN = BankConnection.sendTransactionData(operationData);
                     if (confPIN.equals("true")){
                        successfulLoginMenu(p);
                     }
@@ -1036,7 +1044,7 @@ public class Screen extends JFrame {
                         operationData.add("4");//check balance operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        String balSum = Main.sendTransactionData(operationData);
+                        String balSum = BankConnection.sendTransactionData(operationData);
                         balanceMenu(p, balSum);
                     }
                     else if (nextMenuTmp.equals("withdrawMenu")){
@@ -1176,7 +1184,7 @@ public class Screen extends JFrame {
                         } else {
 
                             //send data to server for processing
-                            String opRes = Main.sendTransactionData(operationData);
+                            String opRes = BankConnection.sendTransactionData(operationData);
                             if (opRes.contains("ERROR")) {
                                 displayOpError(this, p, opRes);
                                 p.removeAll();
@@ -1205,7 +1213,7 @@ public class Screen extends JFrame {
                     }
                     else if (confirmingOp == "confirmTransfer"){
                         //send data to server for processing
-                        String opRes = Main.sendTransactionData(operationData);
+                        String opRes = BankConnection.sendTransactionData(operationData);
                         if (opRes.contains("ERROR")) {
                             displayOpError(this, p, opRes);
                             p.removeAll();
@@ -1822,4 +1830,7 @@ public class Screen extends JFrame {
         }
         writeBills();
     }
+
+
+
 }
