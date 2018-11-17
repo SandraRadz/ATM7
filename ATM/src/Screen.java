@@ -62,6 +62,7 @@ public class Screen extends JFrame {
 
     public Screen () throws Exception {
         this.setTitle("ATM 7");
+        //this.setIconImage(new ImageIcon("Logo/1try.png").getImage());
         this.setLayout(null);
         this.setSize(1000, 640);
         this.setResizable(false);
@@ -467,6 +468,9 @@ public class Screen extends JFrame {
                 p.removeAll();
                 p.updateUI();
                 nextMenu =  "balanceMenu";
+
+                readBills();
+
                 if (!timeout()) {
                     operationData = new ArrayList<String>();
                     operationData.add("3");//check balance operation code
@@ -1325,6 +1329,9 @@ public class Screen extends JFrame {
         //add max amount of bills to ATM
         //fillATMwMoney();
 
+        //add money to the ATM - just a little of them.
+        //fillATMwLittleMoney();
+
         //Read bills info.
         boolean getBillsInfo = readBills();
         if (!getBillsInfo){
@@ -1474,7 +1481,7 @@ public class Screen extends JFrame {
 //        p.add(separator);
         JPanel pLabels = new JPanel();
         pLabels.setLayout(null);
-        pLabels.setBounds(135,90,220,130);
+        pLabels.setBounds(135,90,230,95);// height = 130
         pLabels.setBackground(Color.white);
         pLabels.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         pLabels.setOpaque(false);
@@ -1482,16 +1489,16 @@ public class Screen extends JFrame {
         p.add(pLabels);
 
         JLabel lOptions = new JLabel("1 - Transfer");
-        lOptions.setBounds(150,90,200, 30);
+        lOptions.setBounds(195,90,200, 30);
         p.add(lOptions);
-        JLabel lOptions2 = new JLabel("2 - Money excesses management"); //TODO Remove for now.
-        lOptions2.setBounds(150,120,300, 30);
-        p.add(lOptions2);
+//        JLabel lOptions2 = new JLabel("2 - Money excesses management"); //TODO Remove for now.
+//        lOptions2.setBounds(150,120,300, 30);
+//        p.add(lOptions2);
         JLabel lOptions3 = new JLabel("3 - Withdraw");
-        lOptions3.setBounds(150,150,200, 30);
+        lOptions3.setBounds(195,120,200, 30); //y = 150
         p.add(lOptions3);
         JLabel lOptions4 = new JLabel("4 - Check balance");
-        lOptions4.setBounds(150,180,200, 30);
+        lOptions4.setBounds(195,150,200, 30); //y = 180
         p.add(lOptions4);
 //        JLabel lOptions5 = new JLabel("Cancel - Quit");
 //        lOptions5.setBounds(150,210,200, 30);
@@ -1548,6 +1555,8 @@ public class Screen extends JFrame {
 
     private static void withdrawMenu(JPanel p){
         currentMenu = "withdrawMenu";
+
+
 
         JLabel l = new JLabel("Available banknotes are: ");
         l.setBounds(150,30,200, 30);
@@ -1741,7 +1750,7 @@ public class Screen extends JFrame {
         int w500 = sumPossible / 500;
 
         for (int i = w500; i >= 0; i--){
-            if (a500 - w500 >= 0){
+            if (a500 - i >= 0){
                 w500 = i;
                 break;
             }
@@ -1751,7 +1760,7 @@ public class Screen extends JFrame {
         int w200 = sumPossible / 200;
 
         for (int i = w200; i >= 0; i--){
-            if (a200 - w200 >= 0){
+            if (a200 - i >= 0){
                 w200 = i;
                 break;
             }
@@ -1761,7 +1770,7 @@ public class Screen extends JFrame {
         int w100 = sumPossible / 100;
 
         for (int i = w100; i >= 0; i--){
-            if (a100 - w100 >= 0){
+            if (a100 - i >= 0){
                 w100 = i;
                 break;
             }
@@ -1771,7 +1780,7 @@ public class Screen extends JFrame {
         int w50 = sumPossible / 50;
 
         for (int i = w50; i >= 0; i--){
-            if (a50 - w50 >= 0){
+            if (a50 - i >= 0){
                 w50 = i;
                 break;
             }
@@ -1781,7 +1790,7 @@ public class Screen extends JFrame {
         int w20 = sumPossible / 20;
 
         for (int i = w20; i >= 0; i--){
-            if (a20 - w20 >= 0){
+            if (a20 - i >= 0){
                 w20 = i;
                 break;
             }
@@ -1791,7 +1800,7 @@ public class Screen extends JFrame {
         int w10 = sumPossible / 10;
 
         for (int i = w10; i >= 0; i--){
-            if (a10 - w10 >= 0){
+            if (a10 - i >= 0){
                 w10 = i;
                 break;
             }
@@ -1895,7 +1904,12 @@ public class Screen extends JFrame {
         }
         writeBills();
     }
-
+    private static void fillATMwLittleMoney(){
+        for (int i = 5; i < 11; i++){
+            bills[(i-5)] = i;
+        }
+        writeBills();
+    }
 //    public static String sendTransactionData(ArrayList<String> data){
 //        try {
 //            ipAddress = InetAddress.getByName(address); // создаем объект который отображает вышеописанный IP-адрес.
