@@ -5,11 +5,7 @@ package dao.impl;
 
 import dao.CardDao;
 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CardDaoImpl implements CardDao {
 
@@ -20,15 +16,11 @@ public class CardDaoImpl implements CardDao {
 
     // JDBC variables for opening and managing connection
     private static Connection con;
-    private static Statement stmt;
-    private static ResultSet rs;
 
     public CardDaoImpl(){
             // opening database connection to MySQL server
         try {
             con = DriverManager.getConnection(url, user, password);
-          // getting Statement object to execute query
-            stmt = con.createStatement();
         } catch (SQLException e) {
         e.printStackTrace();
     }
@@ -37,9 +29,11 @@ public class CardDaoImpl implements CardDao {
     @Override
     public boolean ifExists(String cardNum, String pin) {
         boolean res=false;
-        try {
-            String query ="SELECT COUNT(*) FROM card AS exist WHERE number = '" + cardNum+"' AND pin = '"+ pin+"';";
-            rs = stmt.executeQuery(query);
+        String query ="SELECT COUNT(*) FROM card AS exist WHERE number = ? AND pin = ?;";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)){
+            preparedStatement.setString(1, cardNum);
+            preparedStatement.setString(2, pin);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                res = (rs.getInt(1)==0?false:true);
             }
@@ -50,11 +44,13 @@ public class CardDaoImpl implements CardDao {
     }
 
     @Override
-    public double getSum(String cardNum, String pin) {
+    public double getSum(String cardNum) {
         double res=0;
-        try {
-            String query ="SELECT sum FROM card AS exist WHERE number = '" + cardNum+"' AND pin = '"+ pin+"';";
-            rs = stmt.executeQuery(query);
+        String query ="SELECT sum FROM card WHERE number = ?;";
+        try(PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, cardNum);
+            //preparedStatement.setString(2, pin);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res = (rs.getDouble(1));
             }
@@ -64,22 +60,21 @@ public class CardDaoImpl implements CardDao {
         return res;
     }
 
-    @Override
-    public void takeCash(String cardNum, String pin, double sum) {
-        double oldSum = getSum(cardNum, pin);
-        double newsum=oldSum-sum;
-        
-    }
-
-    @Override
-    public void makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
-
+    public void changeCash(String cardNum, double sum) {
+        double oldSum = getSum(cardNum);
+        double newsum=oldSum+sum;
+        String query ="UPDATE card set sum = ? WHERE number = ?;";
+        try(PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setDouble(1, newsum);
+            preparedStatement.setString(2, cardNum);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
         public void close() {
             try { con.close(); } catch(SQLException se) { /*can't do anything */ }
-            try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
-            try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
     }
 
 }

@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Bank" target="6" />
+      <module name="Bank" target="7" />
       <module name="qq" target="1.5" />
     </bytecodeTargetLevel>
   </component>
