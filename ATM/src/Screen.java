@@ -1236,7 +1236,7 @@ public class Screen extends JFrame {
                 if (!timeout()){
                     if (confirmingOp == "confirmWithdrawal") {
                         //check whether there are enough needed bills in ATM
-                        int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(2)));
+                        int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(3)));
                         if (blsNeeded.length == 0) {
                             displayOpError(this, p, "Not enough bills for giving out such sum.");
                             p.removeAll();
