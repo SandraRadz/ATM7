@@ -33,8 +33,14 @@ public class Controller {
                 while (true) {
 
                     arrayData = in.readObject();
+                    ArrayList<String> arr = (ArrayList<String>) arrayData;
+                    System.out.println("+++++++++++++++++ArrayList+++++++++++++++++++++");
+                    for(int i = 0; i < arr.size(); i++) {
+                        System.out.println(arr.get(i));
+                    }
 
-                    result = doQuery((ArrayList<String>) arrayData);
+                    result = doQuery(arr);
+                    System.out.println("-----------------resulr----------------"+ result);
                     out.writeUTF("DONE   "+result); // отсылаем клиенту обратно ту самую строку текста.
                     out.flush();
                     out.flush(); // заставляем поток закончить передачу данных.
@@ -82,6 +88,6 @@ public class Controller {
 
     public String checkSum(String cardNum, String pin){
         CardServiceImpl cs = new CardServiceImpl();
-        return String.valueOf(cs.isCardExist(cardNum, pin));
+        return String.valueOf(cs.getSum(cardNum, pin));
     }
 }

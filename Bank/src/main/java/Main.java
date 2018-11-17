@@ -1,6 +1,8 @@
 import controller.Controller;
 import service.impl.CardServiceImpl;
 
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] ar) {
@@ -18,6 +20,12 @@ public class Main {
         System.out.println(String.valueOf(e));
 */
         Controller controller = new Controller(port);
+       // ArrayList<String> arr = new ArrayList<>();
+        //arr.add("0");
+       // arr.add("2222222222222222");
+       // arr.add("5a1169e8477b61d184da62aeebae067002503a6c54e1b3d35a6fdb504e7dc0a31b8108b95a1fefbb86f5c0276a53126a83d82605c77a875e0e596e90a0916e9c");
+       // System.out.println(controller.doQuery(arr));
         controller.start();
+
     }
 }
