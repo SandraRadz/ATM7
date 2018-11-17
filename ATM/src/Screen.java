@@ -1632,11 +1632,12 @@ public class Screen extends JFrame {
         else if (operation.equals("confirmTransfer")) {
             String sum = operationData.get(3);
             String cardn = operationData.get(4);
-            l = new JLabel("You are about to transfer: $" + sum + " to a card #" + cardn);
+            l = new JLabel("You are about to transfer: $" + sum);
             l.setBounds(150, 60, 320, 30);
+            p.add(l);
             l1 = new JLabel("To a card #" + cardn);
             l1.setBounds(150, 90, 320, 30);
-            p.add(l);
+            p.add(l1);
         }
         else if (operation.equals("confirmBalances")) {
             l = new JLabel("You are about to change balances: ");
