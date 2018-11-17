@@ -1621,18 +1621,23 @@ public class Screen extends JFrame {
         currentMenu = "confirmMenu";
 
         JLabel l;
+        JLabel l1;
         String operation = s;
         //TODO get corresponding data from DB
         if (operation.equals("confirmWithdrawal")) {
-            String sum = operationData.get(2);
+            String sum = operationData.get(3);
             //l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
             l = new JLabel("You are about to withdraw: $" + sum);
             l.setBounds(150, 60, 320, 30);
             p.add(l);
         }
         else if (operation.equals("confirmTransfer")) {
-            l = new JLabel("You are about to transfer: $");
+            String sum = operationData.get(3);
+            String cardn = operationData.get(4);
+            l = new JLabel("You are about to transfer: $" + sum + " to a card #" + cardn);
             l.setBounds(150, 60, 320, 30);
+            l1 = new JLabel("To a card #" + cardn);
+            l1.setBounds(150, 90, 320, 30);
             p.add(l);
         }
         else if (operation.equals("confirmBalances")) {
