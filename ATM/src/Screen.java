@@ -446,6 +446,7 @@ public class Screen extends JFrame {
                     operationData = new ArrayList<String>();
                     operationData.add("4");//check balance operation code
                     operationData.add(cardNum);//current client's card number
+                    operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                     String balSum = Main.sendTransactionData(operationData);
                     balanceMenu(p, balSum);
                 }
@@ -980,16 +981,20 @@ public class Screen extends JFrame {
         ok.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN")) {
                 if (pin.getText().length() == 4) {
-                    Password password = new Password(userPin.getText());
                     p.removeAll();
                     p.updateUI();
                     lastInteractionTime = Instant.now().getEpochSecond();
                     operationData = new ArrayList<String>();
-                    operationData.add("0");//check pin
-                    operationData.add(password.getHash()); //pin hash
-                    String balSum = Main.sendTransactionData(operationData);
-                    //TODO if pin hash equivalent to hash from DB then successfulLoginMenu(p); else error / bad pin etc
-                    successfulLoginMenu(p);
+                    operationData.add("1");//check pin
+                    operationData.add(cardNum);//current client's card number
+                    operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                    String confPIN = Main.sendTransactionData(operationData);
+                    if (confPIN.equals("true")){
+                       successfulLoginMenu(p);
+                    }
+                    else {
+                        displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                    }
 
                 }
             }
@@ -1030,6 +1035,7 @@ public class Screen extends JFrame {
                         operationData = new ArrayList<String>();
                         operationData.add("4");//check balance operation code
                         operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         String balSum = Main.sendTransactionData(operationData);
                         balanceMenu(p, balSum);
                     }
@@ -1085,8 +1091,9 @@ public class Screen extends JFrame {
                 if (!timeout()) {
                     if (true) { //TODO validate and check via DB
                         operationData = new ArrayList<String>();
-                        operationData.add("1");//transfer operation code
+                        operationData.add("2");//transfer operation code
                         operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         operationData.add(transferSumField.getText());//transfer sum
                         transferMenuSecond(p);
                     }
@@ -1139,6 +1146,7 @@ public class Screen extends JFrame {
                         operationData = new ArrayList<String>();
                         operationData.add("3");//withdrawal operation code
                         operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                         operationData.add(withdrawSumField.getText());//withdrawal sum
                         confirmMenu(p, "confirmWithdrawal");
                     } else {
