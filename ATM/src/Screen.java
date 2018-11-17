@@ -45,6 +45,15 @@ public class Screen extends JFrame {
     //static private int[] operationData;
     static private ArrayList<String> operationData;
 
+    private static ObjectOutputStream out;
+    private static ObjectInputStream in;
+
+    static int serverPort = 6666; // здесь обязательно нужно указать порт к которому привязывается сервер.
+    static String address = "127.0.0.1"; // это IP-адрес компьютера, где исполняется наша серверная программа.
+
+    private static InetAddress ipAddress;
+    private static Socket socket;
+
     static private String cardNum = "2222222222222221"; //16 digit; tmp number
 
     //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
@@ -67,7 +76,15 @@ public class Screen extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
+        InetAddress ipAddress = InetAddress.getByName(address); // создаем объект который отображает вышеописанный IP-адрес.
+        Socket socket = new Socket(ipAddress, serverPort); // создаем сокет используя IP-адрес и порт сервера.
 
+//            InputStream sin = socket.getInputStream();
+//            OutputStream sout = socket.getOutputStream();
+
+        // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
+        out = new ObjectOutputStream(socket.getOutputStream());
+        in = new ObjectInputStream(socket.getInputStream());
 
 
         JPanel p = new JPanel();
@@ -455,7 +472,7 @@ public class Screen extends JFrame {
                     operationData.add("3");//check balance operation code
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String balSum = BankConnection.sendTransactionData(operationData);
+                    String balSum = BankConnection.sendTransactionData(operationData, out, in);
                     if (!balSum.contains("fail")){
                         balanceMenu(p, balSum);
                     }
@@ -1002,15 +1019,19 @@ public class Screen extends JFrame {
                     operationData.add("0");//check pin
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String confPIN = BankConnection.sendTransactionData(operationData);
+                    String confPIN = BankConnection.sendTransactionData(operationData, out, in);
 //                    if (confPIN.equals("true")){
 //                    if (confPIN.equals("done")){
-                    if (!confPIN.contains("fail")){
+                    if (!confPIN.contains("false") && !confPIN.contains("fail")){
                        successfulLoginMenu(p);
                     }
                     else {
+                        userPin.setText("");
                         //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
                         displayOpError(this, p, confPIN);
+                        p.removeAll();
+                        p.updateUI();
+                        PIN(p);
                     }
 
                 }
@@ -1018,6 +1039,20 @@ public class Screen extends JFrame {
             else if (currentMenu.equals("PINTimeout")) {
                 //TODO validate via db
                 if (pinTimeout.getText().length() == 4) {
+                    ArrayList<String> operationDataTimeout = new ArrayList<String>();
+                    operationDataTimeout.add("0");//check pin
+                    operationDataTimeout.add(cardNum);//current client's card number
+                    operationDataTimeout.add(new Password(pinTimeout.getText()).getHash()); //pin hash
+                    String confPIN = BankConnection.sendTransactionData(operationDataTimeout, out, in);
+//                    if (confPIN.equals("true")){
+//                    if (confPIN.equals("done")){
+                    if (!confPIN.contains("false") && !confPIN.contains("fail")){
+
+
+
+
+
+
                     p.removeAll();
                     p.updateUI();
                     lastInteractionTime = Instant.now().getEpochSecond();
@@ -1053,7 +1088,7 @@ public class Screen extends JFrame {
                         operationData.add("3");//check balance operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        String balSum = BankConnection.sendTransactionData(operationData);
+                        String balSum = BankConnection.sendTransactionData(operationData, out, in);
                         if (!balSum.contains("fail")){
                             balanceMenu(p, balSum);
                         }
@@ -1076,6 +1111,15 @@ public class Screen extends JFrame {
                         currentMenu = "successfulLoginMenu";
                         successfulLoginMenu(p);
                     }
+                }
+                }
+                else {
+                    userPin.setText("");
+                    //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                    displayOpError(this, p, "fail: wrong pin_timeout");
+                    p.removeAll();
+                    p.updateUI();
+                    PINTimeout(p);
                 }
             }
             else if (currentMenu.equals("cashBalances")) {
@@ -1142,7 +1186,8 @@ public class Screen extends JFrame {
                         confirmMenu(p, "confirmTransfer");
                     } else {
                         //failed to transfer
-                        successfulLoginMenu(p);
+                        //TODO check if needed at all
+                        //successfulLoginMenu(p);
                     }
                 }
                 else {
@@ -1200,7 +1245,7 @@ public class Screen extends JFrame {
                         } else {
 
                             //send data to server for processing
-                            String opRes = BankConnection.sendTransactionData(operationData);
+                            String opRes = BankConnection.sendTransactionData(operationData, out, in);
                             if (opRes.contains("fail")) {
                                 displayOpError(this, p, opRes);
                                 p.removeAll();
@@ -1229,7 +1274,7 @@ public class Screen extends JFrame {
                     }
                     else if (confirmingOp == "confirmTransfer"){
                         //send data to server for processing
-                        String opRes = BankConnection.sendTransactionData(operationData);
+                        String opRes = BankConnection.sendTransactionData(operationData, out, in);
                         if (opRes.contains("fail")) {
                             displayOpError(this, p, opRes);
                             p.removeAll();
@@ -1847,6 +1892,48 @@ public class Screen extends JFrame {
         writeBills();
     }
 
-
+//    public static String sendTransactionData(ArrayList<String> data){
+//        try {
+//            ipAddress = InetAddress.getByName(address); // создаем объект который отображает вышеописанный IP-адрес.
+//            socket = new Socket(ipAddress, serverPort); // создаем сокет используя IP-адрес и порт сервера.
+//
+////            InputStream sin = socket.getInputStream();
+////            OutputStream sout = socket.getOutputStream();
+//
+//            // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
+//            out = new ObjectOutputStream(socket.getOutputStream());
+//            in = new ObjectInputStream(socket.getInputStream());
+//
+//
+//
+//            // try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
+//            out.writeObject(data);
+//
+//            Object resData;
+//
+//            while (true) {
+//                resData = in.readUTF();//.readObject();
+//                String opRes = (String) resData;
+//                //String opRes = in.readUTF();
+//                if (!opRes.equals(null)) {
+//                    return opRes;
+//                }
+//                else {
+//                    System.err.println("Data streaming to server error!");
+//                }
+//            }
+//
+////            } catch (IOException ex) {
+////                System.err.println("Data streaming to server error!");
+////            }
+//
+//        } catch (UnknownHostException ex){
+//
+//        } catch (IOException ex1){
+//
+//        }
+//        //return "";
+//        return "fail: ERROR sending data to server";
+//    }
 
 }
