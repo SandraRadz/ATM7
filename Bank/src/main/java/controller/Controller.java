@@ -41,7 +41,7 @@ public class Controller {
 
                     result = doQuery(arr);
                     System.out.println("-----------------resulr----------------"+ result);
-                    out.writeUTF("DONE   "+result); // отсылаем клиенту обратно ту самую строку текста.
+                    out.writeUTF(result); // отсылаем клиенту обратно ту самую строку текста.
                     out.flush();
                     out.flush(); // заставляем поток закончить передачу данных.
                     System.out.println("Waiting for the next operation data...");
@@ -66,10 +66,11 @@ public class Controller {
     }
 
     public String transaction(String cardFrom, String pin, String sum, String cardTo){
-        String res="done";
+        String res;
         double s = Double.parseDouble(sum);
         CardServiceImpl cs = new CardServiceImpl();
-        cs.makeTransaction(cardFrom, pin, s ,cardTo );
+        res=cs.makeTransaction(cardFrom, pin, s ,cardTo );
+        System.out.println("RESULT "+res);
         return res;
     }
 
@@ -79,10 +80,10 @@ public class Controller {
     }
 
     public String getCash(String cardNum, String pin, String sum){
-        String res="done";
+        String res;
         double s = Double.parseDouble(sum);
         CardServiceImpl cs = new CardServiceImpl();
-        cs.getCash(cardNum, pin, s);
+        res=cs.getCash(cardNum, pin, s);
         return res;
     }
 

@@ -60,7 +60,8 @@ public class CardDaoImpl implements CardDao {
         return res;
     }
 
-    public void changeCash(String cardNum, double sum) {
+    public String changeCash(String cardNum, double sum) {
+        String res="";
         double oldSum = getSum(cardNum);
         double newsum=oldSum+sum;
         String query ="UPDATE card set sum = ? WHERE number = ?;";
@@ -68,9 +69,12 @@ public class CardDaoImpl implements CardDao {
             preparedStatement.setDouble(1, newsum);
             preparedStatement.setString(2, cardNum);
             preparedStatement.executeUpdate();
+            res="done";
         } catch (SQLException e) {
             e.printStackTrace();
+            res="fail";
         }
+        return res;
     }
 
         public void close() {

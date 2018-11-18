@@ -24,27 +24,33 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void getCash(String cardNum, String pin, double sum) {
+    public String getCash(String cardNum, String pin, double sum) {
+        String res="";
         CardDaoImpl cd = new CardDaoImpl();
         if(cd.getSum(cardNum)>=sum) {
-            cd.changeCash(cardNum, -sum);
+            res=cd.changeCash(cardNum, -sum);
             WriteOffDaoImpl wd = new WriteOffDaoImpl();
             wd.addWriteOff((wd.getCount()+1), sum, cardNum, null);
             wd.close();
         }
+        else {res="fail";}
         cd.close();
+        return res;
     }
 
     @Override
-    public void makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
+    public String makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
+        String res="";
         CardDaoImpl cd = new CardDaoImpl();
         if(cd.getSum(cardNumFrom)>=sum) {
-            cd.changeCash(cardNumFrom, -sum);
+            res=cd.changeCash(cardNumFrom, -sum);
             cd.changeCash(cardNumTo, sum);
             WriteOffDaoImpl wd = new WriteOffDaoImpl();
             wd.addWriteOff((wd.getCount()+1), sum, cardNumFrom, cardNumTo);
             wd.close();
         }
+        else {res="fail";}
         cd.close();
+        return res;
     }
 }

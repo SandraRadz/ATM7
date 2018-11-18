@@ -47,9 +47,7 @@ public class WriteOffDaoImpl implements WriteOffDao {
             preparedStatement.setDouble(2, sum);
             preparedStatement.setString(3, cardFrom);
             preparedStatement.setString(4, cardTo);
-            int rows = preparedStatement.executeUpdate();
-
-            System.out.printf("%d rows added", rows);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
