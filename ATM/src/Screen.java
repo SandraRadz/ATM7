@@ -40,9 +40,9 @@ class Screen extends JFrame {
      private long lastInteractionTime;
 
     // private int[] operationData;
-     private ArrayList<String> operationData;
+    private ArrayList<String> operationData;
 
-     private BankConnection bc = new BankConnection();
+    private BankConnection bc = new BankConnection();
     private  ObjectOutputStream out;
     private  ObjectInputStream in;
 
@@ -310,1007 +310,1033 @@ class Screen extends JFrame {
 
         //keyboard buttons functions logic
         b1.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"1");
-                userPin.setText(userPin.getText()+"1");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"1");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"1");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu =  "transferMenu";
-                if (!timeout()) {
-                    transferMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"1");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"1");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"1");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"1");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "1-");
-                    } else{
-                        date.setText(date.getText() + "1");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"1");
+                        userPin.setText(userPin.getText()+"1");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"1");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"1");
+                    }
+                case "successfulLoginMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu =  "transferMenu";
+                    if (!timeout()) transferMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"1");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "1");
+                    }
+                    break;
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"1");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "1");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("1")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "1-");
+                        }else{
+                            date.setText(date.getText() + "1");
+                        }
+                    }
+                    break;
             }
         });
 
         b2.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"2");
-                userPin.setText(userPin.getText()+"2");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"2");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"2");
-            }
-//            else if(currentMenu.equals("successfulLoginMenu")){
-//                p.removeAll();
-//                p.updateUI();
-//                nextMenu =  "cashBalances";
-//                if (!timeout()) {
-//                    cashBalances(p);
-//                }
-//                else {
-//                    PINTimeout(p);
-//                }
-//            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"2");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"2");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"2");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"2");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "2-");
-                    } else{
-                        date.setText(date.getText() + "2");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"2");
+                        userPin.setText(userPin.getText()+"2");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"2");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"2");
+                    }
+                case "successfulLoginMenu":
+//              else if(currentMenu.equals("successfulLoginMenu")){
+//                  p.removeAll();
+//                  p.updateUI();
+//                  nextMenu =  "cashBalances";
+//                  if (!timeout()) cashBalances(p);
+//                  else  PINTimeout(p);
+//              }
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"2");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "2");
+                    }
+                    break;
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"2");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "2");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("2")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "2-");
+                        }else{
+                            date.setText(date.getText() + "2");
+                        }
+                    }
+                    break;
             }
         });
 
         b3.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"3");
-                userPin.setText(userPin.getText()+"3");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"3");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"3");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu =  "withdrawMenu";
-                if (!timeout()) {
-                    withdrawMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"3");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"3");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"3");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"3");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "3-");
-                    } else{
-                        date.setText(date.getText() + "3");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"3");
+                        userPin.setText(userPin.getText()+"3");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"3");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"3");
+                    }
+                case "successfulLoginMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu =  "withdrawMenu";
+                    if (!timeout()) withdrawMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"3");
+                    }
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "3");
+                    }
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"3");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "3");
+                    }
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("3")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "3-");
+                        }else{
+                            date.setText(date.getText() + "3");
+                        }
+                    }
+                    break;
             }
         });
 
         b4.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"4");
-                userPin.setText(userPin.getText()+"4");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"4");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"4");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu =  "balanceMenu";
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"4");
+                        userPin.setText(userPin.getText()+"4");
+                    }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"4");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"4");
+                    }
+                case "successfulLoginMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu =  "balanceMenu";
 
-                readBills();
+                    readBills();
 
-                if (!timeout()) {
-                    operationData = new ArrayList<String>();
-                    operationData.add("3");//check balance operation code
-                    operationData.add(cardNum);//current client's card number
-                    operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String balSum = bc.sendTransactionData(operationData, out, in);
-                    if (!balSum.contains("fail")){
-                        balanceMenu(p, balSum);
+                    if (!timeout()) {
+                        operationData = new ArrayList<String>();
+                        operationData.add("3");//check balance operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                        String balSum = bc.sendTransactionData(operationData, out, in);
+                        if (!balSum.contains("fail")) balanceMenu(p, balSum);
+                        else displayOpError(this, p, "Failed to transfer data.");
                     }
                     else {
-                        displayOpError(this, p, "Failed to transfer data.");
+                        PINTimeout(p);
                     }
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"4");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"4");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"4");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"4");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "4-");
-                    } else{
-                        date.setText(date.getText() + "4");
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"4");
                     }
-                }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "4");
+                    }
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"4");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "4");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("4")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "4-");
+                        }else{
+                            date.setText(date.getText() + "4");
+                        }
+                    }
+                    break;
             }
         });
 
         b5.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"5");
-                userPin.setText(userPin.getText()+"5");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"5");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"5");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"5");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"5");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"5");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"5");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "5-");
-                    } else{
-                        date.setText(date.getText() + "5");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"5");
+                        userPin.setText(userPin.getText()+"5");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"5");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"5");
+                    }
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"5");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "5");
+                    }
+                    break;
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"5");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "5");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("5")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "5-");
+                        }else{
+                            date.setText(date.getText() + "5");
+                        }
+                    }
+                    break;
             }
         });
 
         b6.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"6");
-                userPin.setText(userPin.getText()+"6");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"6");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"6");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"6");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"6");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"6");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"6");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "6-");
-                    } else{
-                        date.setText(date.getText() + "6");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"6");
+                        userPin.setText(userPin.getText()+"6");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"6");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"6");
+                    }
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"6");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "6");
+                    }
+                    break;
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"6");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "6");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("6")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "6-");
+                        }else{
+                            date.setText(date.getText() + "6");
+                        }
+                    }
+                    break;
             }
         });
 
         b7.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"7");
-                userPin.setText(userPin.getText()+"7");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"7");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"7");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"7");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"7");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"7");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"7");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "7-");
-                    } else{
-                        date.setText(date.getText() + "7");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"7");
+                        userPin.setText(userPin.getText()+"7");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"7");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"7");
+                    }
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"7");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "7");
+                    }
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"7");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "7");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("7")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "7-");
+                        }else{
+                            date.setText(date.getText() + "7");
+                        }
+                    }
+                    break;
             }
         });
 
         b8.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"8");
-                userPin.setText(userPin.getText()+"8");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"8");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"8");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"8");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"8");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"8");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"8");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "8-");
-                    } else{
-                        date.setText(date.getText() + "8");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"8");
+                        userPin.setText(userPin.getText()+"8");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"8");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"8");
+                    }
+                    break;
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"8");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "8");
+                    }
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"8");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "8");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("8")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "8-");
+                        }else{
+                            date.setText(date.getText() + "8");
+                        }
+                    }
+                    break;
             }
         });
 
         b9.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"9");
-                userPin.setText(userPin.getText()+"9");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"9");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"9");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && sum.getText().length() < 6){
-                sum.setText(sum.getText()+"9");
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() < 6){
-                transferSumField.setText(transferSumField.getText()+"9");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"9");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() < 6){
-                withdrawSumField.setText(withdrawSumField.getText()+"9");
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "9-");
-                    } else{
-                        date.setText(date.getText() + "9");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"9");
+                        userPin.setText(userPin.getText()+"9");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"9");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"9");
+                    }
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"9");
+                    }
+                    break;
+                case "transferMenu":
+                    if(transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "9");
+                    }
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"9");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if (withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "9");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("9")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "9-");
+                        }else{
+                            date.setText(date.getText() + "9");
+                        }
+                    }
+                    break;
             }
         });
 
         b_quit.addActionListener((ActionEvent e) -> {
             userPin.setText("");
+            p.removeAll();
+            p.updateUI();
+            PIN(p);
 
-            if (currentMenu.equals("PIN")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("PINTimeout")) {
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("cashBalances")) {
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if(currentMenu.equals("cashBalances_sum")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("transferMenu")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("transferMenuSecond")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("balanceMenu")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if (currentMenu.equals("withdrawMenu")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if(currentMenu.equals("confirmMenu")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                p.removeAll();
-                p.updateUI();
-                PIN(p);
-            }
         });
 
         b0.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN") && pin.getText().length() < 4){
-                pin.setText(pin.getText()+"0");
-                userPin.setText(userPin.getText()+"0");
-            }
-            else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
-                pinTimeout.setText(pinTimeout.getText()+"0");
-            }
-            else if (currentMenu.equals("cashBalances") && card.getText().length() < 16) {
-                card.setText(card.getText()+"0");
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if (currentMenu.equals("cashBalances_sum") && !sum.getText().equals("") && sum.getText().length() < 6) {
-                sum.setText(sum.getText()+"0");
-            }
-            else if(currentMenu.equals("transferMenu") && !transferSumField.getText().equals("") && transferSumField.getText().length() < 6) {
-                transferSumField.setText(transferSumField.getText() + "0");
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() < 16){
-                transferRecipientNum.setText(transferRecipientNum.getText()+"0");
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu") && !withdrawSumField.getText().equals("") && withdrawSumField.getText().length() < 6){
-                if(!withdrawSumField.getText().equals("")) {
-                    withdrawSumField.setText(withdrawSumField.getText() + "0");
-                }
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                if(date.getText().length() < 10 && !date.getText().equals("0")){
-                    if (date.getText().length() == 3 || date.getText().length() == 6) {
-                        date.setText(date.getText() + "0-");
-                    } else{
-                        date.setText(date.getText() + "0");
+            switch (currentMenu){
+                case "PIN":
+                    if (pin.getText().length() < 4){
+                        pin.setText(pin.getText()+"0");
+                        userPin.setText(userPin.getText()+"0");
                     }
-                }
+                    break;
+                case "PINTimeout":
+                    if ( pinTimeout.getText().length() < 4){
+                        pinTimeout.setText(pinTimeout.getText()+"0");
+                    }
+                    break;
+                case "cashBalances":
+                    if ( card.getText().length() < 16) {
+                        card.setText(card.getText()+"0");
+                    }
+                    break;
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    if (!sum.getText().equals("") && sum.getText().length() < 6) {
+                        sum.setText(sum.getText()+"0");
+                    }
+                    break;
+                case "transferMenu":
+                    if(!transferSumField.getText().equals("") && transferSumField.getText().length() < 6) {
+                        transferSumField.setText(transferSumField.getText() + "0");
+                    }
+                    break;
+                case "transferMenuSecond" :
+                    if (transferRecipientNum.getText().length() < 16){
+                        transferRecipientNum.setText(transferRecipientNum.getText()+"0");
+                    }
+                    break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu":
+                    if ( !withdrawSumField.getText().equals("") && withdrawSumField.getText().length() < 6){
+                        withdrawSumField.setText(withdrawSumField.getText() + "0");
+                    }
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    if(date.getText().length() < 10 && !date.getText().equals("0")){
+                        if (date.getText().length() == 3 || date.getText().length() == 6) {
+                            date.setText(date.getText() + "0-");
+                        }else{
+                            date.setText(date.getText() + "0");
+                        }
+                    }
+                    break;
             }
         });
 
-        b_grate.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN")){
-
+/*        b_grate.addActionListener((ActionEvent e) -> {
+            switch (currentMenu) {
+                case "PIN":
+                    break;
+                case "PINTimeout":
+                    break;
+                case "cashBalances":
+                    break;
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    break;
+                case "transferMenu":
+                    break;
+                case "transferMenuSecond":
+                    break;
+                case "balanceMenu":
+                    break;
+                case "withdrawMenu":
+                    break;
+                case "confirmMenu":
+                    break;
+                case "cashBalances_date":
+                    break;
             }
-            else if (currentMenu.equals("PINTimeout")){
-            }
-            else if (currentMenu.equals("cashBalances")) {
-
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_sum")){
-            }
-            else if (currentMenu.equals("transferMenu")){
-            }
-            else if (currentMenu.equals("transferMenuSecond")){
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu")){
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-            }
-        });
+        });*/
 
         cancel.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN")){
-                pin.setText("");
-                userPin.setText("");
+            switch (currentMenu) {
+                case "PIN":
+                    pin.setText("");
+                    userPin.setText("");
+                    break;
+                case "PINTimeout":
+                    pinTimeout.setText("");
+                    break;
+                case "cashBalances":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "successfulLoginMenu":
+//                  p.removeAll();
+//                  p.updateUI();
+//                  nextMenu = "successfulLoginMenu";
+//                  if (!timeout()) successfulLoginMenu(p)
+//                  else PINTimeout(p);break;
+                case "cashBalances_sum":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "transferMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "transferMenuSecond":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "balanceMenu" :
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "withdrawMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+                case "confirmMenu":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
+
+                case "cashBalances_date":
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()) successfulLoginMenu(p);
+                    else PINTimeout(p);
+                    break;
             }
-            if (currentMenu.equals("PINTimeout")) {
-                pinTimeout.setText("");
-            }
-            else if (currentMenu.equals("cashBalances")) {
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-//                p.removeAll();
-//                p.updateUI();
-//                nextMenu = "successfulLoginMenu";
-//                if (!timeout()) {
-//                    successfulLoginMenu(p);
-//                }
-//                else {
-//                    PINTimeout(p);
-//                }
-            }
-            else if(currentMenu.equals("cashBalances_sum")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("transferMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("transferMenuSecond")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("balanceMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("withdrawMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if(currentMenu.equals("confirmMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
+
         });
 
         delete.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN")) {
-                String str = pin.getText();
-                if (str != null && str.length() > 0) {
-                    pin.setText(str.substring(0, str.length() - 1));
-                    userPin.setText(userPin.getText().substring(0,userPin.getText().length()-1));
+            switch (currentMenu) {
+                case "PIN" :
+                {String str = pin.getText();
+                    if (str != null && str.length() > 0) {
+                        pin.setText(str.substring(0, str.length() - 1));
+                        userPin.setText(userPin.getText().substring(0,userPin.getText().length()-1));
+                    }}
+                break;
+                case "PINTimeout" :
+                {String str = pinTimeout.getText();
+                    if (str != null && str.length() > 0) pinTimeout.setText(str.substring(0, str.length() - 1));}
+                break;
+                case "cashBalances" :
+                {String str = card.getText();
+                    if (str != null && str.length() > 0) card.setText(str.substring(0, str.length() - 1));}
+                break;
+                case "cashBalances_sum" :
+                {String str = sum.getText();
+                    if (str != null && str.length() > 0) sum.setText(str.substring(0, str.length() - 1));}
+                break;
+                case "transferMenu" :
+                {String str = transferSumField.getText();
+                    if (str != null && str.length() > 0) transferSumField.setText(str.substring(0, str.length() - 1));}
+                break;
+                case "transferMenuSecond" :
+                {String str = transferRecipientNum.getText();
+                    if (str != null && str.length() > 0) transferRecipientNum.setText(str.substring(0, str.length() - 1));}
+                break;
+                case "balanceMenu" :
+                    break;
+                case "withdrawMenu" :
+                {String str = withdrawSumField.getText();
+                    if (str != null && str.length() > 0) withdrawSumField.setText(str.substring(0, str.length() - 1));
                 }
-            }
-            else if (currentMenu.equals("PINTimeout")) {
-                String str = pinTimeout.getText();
-                if (str != null && str.length() > 0) {
-                    pinTimeout.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if (currentMenu.equals("cashBalances")) {
-                String str = card.getText();
-                if (str != null && str.length() > 0) {
-                    card.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_sum")){
-                String str = sum.getText();
-                if (str != null && str.length() > 0) {
-                    sum.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if (currentMenu.equals("transferMenu")){
-                String str = transferSumField.getText();
-                if (str != null && str.length() > 0) {
-                    transferSumField.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if (currentMenu.equals("transferMenuSecond")){
-                String str = transferRecipientNum.getText();
-                if (str != null && str.length() > 0) {
-                    transferRecipientNum.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if (currentMenu.equals("balanceMenu")){
-            }
-            else if (currentMenu.equals("withdrawMenu")){
-                String str = withdrawSumField.getText();
-                if (str != null && str.length() > 0) {
-                    withdrawSumField.setText(str.substring(0, str.length() - 1));
-                }
-            }
-            else if(currentMenu.equals("confirmMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                String str = date.getText();
-                if (str != null && str.length() > 0) {
-                    if (date.getText().length() == 6 || date.getText().length() == 9){
-                        date.setText(str.substring(0, str.length() - 2));
-                    }else {
-                        date.setText(str.substring(0, str.length() - 1));
+                break;
+                case "confirmMenu" :
+                    break;
+                case "cashBalances_date" :
+                {String str = date.getText();
+                    if (str != null && str.length() > 0) {
+                        if (date.getText().length() == 6 || date.getText().length() == 9) date.setText(str.substring(0, str.length() - 2));
+                        else date.setText(str.substring(0, str.length() - 1));
                     }
                 }
+                break;
+
             }
         });
 
         ok.addActionListener((ActionEvent e) -> {
-            if (currentMenu.equals("PIN")) {
-                if (pin.getText().length() == 4) {
-                    p.removeAll();
-                    p.updateUI();
-                    lastInteractionTime = Instant.now().getEpochSecond();
-                    operationData = new ArrayList<String>();
-                    operationData.add("0");//check pin
-                    operationData.add(cardNum);//current client's card number
-                    operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String confPIN = bc.sendTransactionData(operationData, out, in);
-//                    if (confPIN.equals("true")){
-//                    if (confPIN.equals("done")){
-                    if (!confPIN.contains("false") && !confPIN.contains("fail")){
-                       successfulLoginMenu(p);
-                    }
-                    else {
-                        userPin.setText("");
-                        displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
-                        //displayOpError(this, p, confPIN);
-                        p.removeAll();
-                        p.updateUI();
-                        PIN(p);
-                    }
-
-                }
-            }
-            else if (currentMenu.equals("PINTimeout")) {
-                //TODO validate via db
-                if (pinTimeout.getText().length() == 4) {
-                    ArrayList<String> operationDataTimeout = new ArrayList<String>();
-                    operationDataTimeout.add("0");//check pin
-                    operationDataTimeout.add(cardNum);//current client's card number
-                    operationDataTimeout.add(new Password(pinTimeout.getText()).getHash()); //pin hash
-                    String confPIN = bc.sendTransactionData(operationDataTimeout, out, in);
-
-                    if (!confPIN.contains("false") && !confPIN.contains("fail")){
-
+            switch (currentMenu)
+            {
+                case "PIN":
+                    if (pin.getText().length() == 4) {
                         p.removeAll();
                         p.updateUI();
                         lastInteractionTime = Instant.now().getEpochSecond();
-                        String nextMenuTmp = nextMenu;
-                        nextMenu = "";
-                        if (nextMenuTmp.equals("cashBalances")){
-                            currentMenu = nextMenuTmp;
-                            cashBalances(p);
-                        }
-                        else if (nextMenuTmp.equals("cashBalances_sum")){
-                            currentMenu = nextMenuTmp;
-                            cashBalances_sum(p);
-                        }
-                        else if (nextMenuTmp.equals("cashBalances_date")){
-                            currentMenu = nextMenuTmp;
-                            cashBalances_date(p);
-                        }
-                        else if (nextMenuTmp.equals("successfulLoginMenu")){
-                            currentMenu = nextMenuTmp;
+                        operationData = new ArrayList<String>();
+                        operationData.add("0");//check pin
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                        String confPIN = bc.sendTransactionData(operationData, out, in);
+//                      if (confPIN.equals("true")){
+//                      if (confPIN.equals("done")){
+                        if (!confPIN.contains("false") && !confPIN.contains("fail")){
                             successfulLoginMenu(p);
                         }
-                        else if (nextMenuTmp.equals("transferMenu")){
-                            currentMenu = nextMenuTmp;
-                            transferMenu(p);
+                        else {
+                            userPin.setText("");
+                            displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                            //displayOpError(this, p, confPIN);
+                            p.removeAll();
+                            p.updateUI();
+                            PIN(p);
                         }
-                        else if (nextMenuTmp.equals("transferMenuSecond")){
-                            currentMenu = nextMenuTmp;
-                            transferMenu(p);
+                    }
+                    break;
+
+                case "PINTimeout":
+                    //TODO validate via db
+                    if (pinTimeout.getText().length() == 4) {
+                        ArrayList<String> operationDataTimeout = new ArrayList<String>();
+                        operationDataTimeout.add("0");//check pin
+                        operationDataTimeout.add(cardNum);//current client's card number
+                        operationDataTimeout.add(new Password(pinTimeout.getText()).getHash()); //pin hash
+                        String confPIN = bc.sendTransactionData(operationDataTimeout, out, in);
+
+                        if (!confPIN.contains("false") && !confPIN.contains("fail")){
+                            p.removeAll();
+                            p.updateUI();
+                            lastInteractionTime = Instant.now().getEpochSecond();
+                            String nextMenuTmp = nextMenu;
+                            nextMenu = "";
+                            switch (nextMenuTmp){
+                                case "cashBalances":
+                                    currentMenu = nextMenuTmp;
+                                    cashBalances(p);
+                                    break;
+                                case "cashBalances_sum":
+                                    currentMenu = nextMenuTmp;
+                                    cashBalances_sum(p);
+                                    break;
+                                case "cashBalances_date":
+                                    currentMenu = nextMenuTmp;
+                                    cashBalances_date(p);
+                                    break;
+                                case "successfulLoginMenu":
+                                    currentMenu = nextMenuTmp;
+                                    successfulLoginMenu(p);
+                                    break;
+                                case "transferMenu":
+                                    currentMenu = nextMenuTmp;
+                                    transferMenu(p);
+                                    break;
+                                case "transferMenuSecond":
+                                    currentMenu = nextMenuTmp;
+                                    transferMenu(p);
+                                    break;
+                                case "balanceMenu":
+                                    currentMenu = nextMenuTmp;
+                                    operationData = new ArrayList<String>();
+                                    operationData.add("3");//check balance operation code
+                                    operationData.add(cardNum);//current client's card number
+                                    operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                                    String balSum = bc.sendTransactionData(operationData, out, in);
+                                    if (!balSum.contains("fail")) balanceMenu(p, balSum);
+                                    else displayOpError(this, p, "Failed to transfer data.");
+                                    balanceMenu(p, balSum);
+                                    break;
+                                case "withdrawMenu":
+                                    currentMenu = nextMenuTmp;
+                                    withdrawMenu(p);
+                                    break;
+                                case "confirmMenu":
+                                    currentMenu = nextMenuTmp;
+                                    confirmMenu(p, confirmingOp);
+                                    break;
+                                default:
+                                    currentMenu = "successfulLoginMenu";
+                                    successfulLoginMenu(p);
+
+                            }
                         }
-                        else if (nextMenuTmp.equals("balanceMenu")){
-                            currentMenu = nextMenuTmp;
-                            operationData = new ArrayList<String>();
-                            operationData.add("3");//check balance operation code
-                            operationData.add(cardNum);//current client's card number
-                            operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                            String balSum = bc.sendTransactionData(operationData, out, in);
-                            if (!balSum.contains("fail")){
-                                balanceMenu(p, balSum);
+                    }
+                    else {
+                        userPin.setText("");
+                        //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
+                        displayOpError(this, p, "fail: wrong pin_timeout");
+                        p.removeAll();
+                        p.updateUI();
+                        PINTimeout(p);
+                    }
+                    break;
+                case "cashBalances":
+                    //TODO validate via db
+                    if(card.getText().length() == 16) {
+                        p.removeAll();
+                        p.updateUI();
+                        nextMenu = "cashBalances_sum";
+                        if (!timeout()) cashBalances_sum(p);
+                        else PINTimeout(p);
+                    }
+                    break;
+                case "successfulLoginMenu":
+                    break;
+                case "cashBalances_sum":
+                    //TODO validate via db
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu = "cashBalances_date";
+                    if (!timeout()) cashBalances_date(p);
+                    else PINTimeout(p);
+                    break;
+                case "transferMenu":
+                    if ( transferSumField.getText().length() > 0){
+                        p.removeAll();
+                        p.updateUI();
+                        nextMenu = "transferMenuSecond";
+                        if (!timeout()) {
+                            if (true) { //TODO validate and check via DB
+                                operationData = new ArrayList<String>();
+                                operationData.add("1");//transfer operation code
+                                operationData.add(cardNum);//current client's card number
+                                operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                                operationData.add(transferSumField.getText());//transfer sum
+                                transferMenuSecond(p);
                             }
                             else {
-                                displayOpError(this, p, "Failed to transfer data.");
+                                //failed to transfer
+                                successfulLoginMenu(p);
                             }
-                            balanceMenu(p, balSum);
                         }
-                        else if (nextMenuTmp.equals("withdrawMenu")){
-                            currentMenu = nextMenuTmp;
-                            withdrawMenu(p);
-                        }
-                        else if (nextMenuTmp.equals("confirmMenu")){
-                            currentMenu = nextMenuTmp;
-                            confirmMenu(p, confirmingOp);
-                        }
-                        //just in case
                         else {
-                            currentMenu = "successfulLoginMenu";
-                            successfulLoginMenu(p);
+                            PINTimeout(p);
                         }
                     }
-                }
-                else {
-                    userPin.setText("");
-                    //displayOpError(this, p, "Incorrect PIN. Please enter your PIN again.");
-                    displayOpError(this, p, "fail: wrong pin_timeout");
+                    break;
+                case "transferMenuSecond":
+                    if  (transferRecipientNum.getText().length() == 16){
+                        //TODO check via DB
+                        p.removeAll();
+                        p.updateUI();
+                        nextMenu = "confirmMenu";
+                        confirmingOp = "confirmTransfer";
+                        if (!timeout()) {
+                            //if (transferRecipientNum.getText().length() == 16) {
+                            operationData.add(transferRecipientNum.getText());//recipient card number
+                            confirmMenu(p, "confirmTransfer");
+                            //} else {
+                            //failed to transfer
+                            //TODO check if needed at all
+                            //successfulLoginMenu(p);
+                            //}
+                        }
+                        else {
+                            PINTimeout(p);
+                        }
+                    }
+                    break;
+                case "balanceMenu":
                     p.removeAll();
                     p.updateUI();
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("cashBalances")) {
-                //TODO validate via db
-                if(card.getText().length() == 16) {
-                    p.removeAll();
-                    p.updateUI();
-                    nextMenu = "cashBalances_sum";
+                    nextMenu = "successfulLoginMenu";
                     if (!timeout()) {
-                        cashBalances_sum(p);
+                        successfulLoginMenu(p);
                     }
                     else {
                         PINTimeout(p);
                     }
-                }
-            }
-            else if(currentMenu.equals("successfulLoginMenu")){
-            }
-            else if(currentMenu.equals("cashBalances_sum") && sum.getText().length() > 0){
-                //TODO validate via db
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "cashBalances_date";
-                if (!timeout()) {
-                    cashBalances_date(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() > 0){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "transferMenuSecond";
-                if (!timeout()) {
-                    if (true) { //TODO validate and check via DB
-                        operationData = new ArrayList<String>();
-                        operationData.add("1");//transfer operation code
-                        operationData.add(cardNum);//current client's card number
-                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        operationData.add(transferSumField.getText());//transfer sum
-                        transferMenuSecond(p);
-                    }
-                    else {
-                        //failed to transfer
-                        successfulLoginMenu(p);
-                    }
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() == 16){
-                //TODO check via DB
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "confirmMenu";
-                confirmingOp = "confirmTransfer";
-                if (!timeout()) {
-                    //if (transferRecipientNum.getText().length() == 16) {
-                        operationData.add(transferRecipientNum.getText());//recipient card number
-                        confirmMenu(p, "confirmTransfer");
-                    //} else {
-                        //failed to transfer
-                        //TODO check if needed at all
-                        //successfulLoginMenu(p);
-                    //}
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("balanceMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-                if (!timeout()) {
-                    successfulLoginMenu(p);
-                }
-                else {
-                    PINTimeout(p);
-                }
-            }
-            else if (currentMenu.equals("withdrawMenu") && withdrawSumField.getText().length() > 0){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "confirmMenu";
-                confirmingOp = "confirmWithdrawal";
-                if (!timeout()) {
-                    if (true) { //TODO validate and check via DB
-                        operationData = new ArrayList<String>();
-                        operationData.add("2");//withdrawal operation code
-                        operationData.add(cardNum);//current client's card number
-                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        operationData.add(withdrawSumField.getText());//withdrawal sum
-                        confirmMenu(p, "confirmWithdrawal");
-                    } else {
-                        //failed to withdraw
-                        successfulLoginMenu(p);
-                    }
-                }
-                else {
-                    PINTimeout(p);
-                }
-
-            }
-            else if(currentMenu.equals("confirmMenu")){
-                p.removeAll();
-                p.updateUI();
-                nextMenu = "successfulLoginMenu";
-
-                if (!timeout()){
-                    if (confirmingOp == "confirmWithdrawal") {
-                        //check whether there are enough needed bills in ATM
-                        int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(3)));
-                        if (blsNeeded.length == 0) {
-                            displayOpError(this, p, "Not enough bills for giving out such sum.");
-                            p.removeAll();
-                            p.updateUI();
-                            successfulLoginMenu(p);
-                        } else {
-
-                            //send data to server for processing
-                            String opRes = bc.sendTransactionData(operationData, out, in);
-                            if (opRes.contains("fail")) {
-                                displayOpError(this, p, opRes);
-                                p.removeAll();
-                                p.updateUI();
-                                successfulLoginMenu(p);
+                    break;
+                case "withdrawMenu":
+                    if ( withdrawSumField.getText().length() > 0){
+                        p.removeAll();
+                        p.updateUI();
+                        nextMenu = "confirmMenu";
+                        confirmingOp = "confirmWithdrawal";
+                        if (!timeout()) {
+                            if (true) { //TODO validate and check via DB
+                                operationData = new ArrayList<String>();
+                                operationData.add("2");//withdrawal operation code
+                                operationData.add(cardNum);//current client's card number
+                                operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                                operationData.add(withdrawSumField.getText());//withdrawal sum
+                                confirmMenu(p, "confirmWithdrawal");
                             } else {
-
-                                //change the values of the bills available => give out money
-                                updateBillsValues(blsNeeded);
-
-                                //TODO ...not implementing error during changing bills count in the ATM as of right now
-                                boolean rewritingBillsRes = writeBills();
-//                    if (!rewritingBillsRes) {
-//                        displayOpError(this, p);
-//                        p.removeAll();
-//                        p.updateUI();
-//                        successfulLoginMenu(p);
-//                    } else {
-                                displayOpSuccess(this, p, opRes);
-                                p.removeAll();
-                                p.updateUI();
+                                //failed to withdraw
                                 successfulLoginMenu(p);
-//                    }
                             }
                         }
-                    }
-                    else if (confirmingOp == "confirmTransfer"){
-                        //send data to server for processing
-                        String opRes = bc.sendTransactionData(operationData, out, in);
-                        if (opRes.contains("fail")) {
-                            displayOpError(this, p, opRes);
-                            p.removeAll();
-                            p.updateUI();
-                            successfulLoginMenu(p);
-                        } else {
-                            displayOpSuccess(this, p, opRes);
-                            p.removeAll();
-                            p.updateUI();
-                            successfulLoginMenu(p);
+                        else {
+                            PINTimeout(p);
                         }
-                        }
-                    else if (confirmingOp == "confirmBalances"){
-                        //TODO implement at some point
                     }
-                    confirmingOp = "";
-                }
-                else {
-                    confirmingOp = "";
-                    PINTimeout(p);
-                }
-            }
-            else if(currentMenu.equals("cashBalances_date")){
-                //TODO validate via db
-                if(date.getText().length() == 10) {
+                    break;
+                case "confirmMenu":
                     p.removeAll();
                     p.updateUI();
-                    nextMenu = "confirmMenu";
-                    confirmingOp = "confirmBalances";
-                    if (!timeout()) {
-                        confirmMenu(p, "confirmBalances");
+                    nextMenu = "successfulLoginMenu";
+                    if (!timeout()){
+                        switch (confirmingOp){
+                            case "confirmWithdrawal" :
+                                //check whether there are enough needed bills in ATM
+                                int[] blsNeeded = calcNeededBills(Integer.valueOf(operationData.get(3)));
+                                if (blsNeeded.length == 0) {
+                                    displayOpError(this, p, "Not enough bills for giving out such sum.");
+                                    p.removeAll();
+                                    p.updateUI();
+                                    successfulLoginMenu(p);
+                                }else {
+                                    //send data to server for processing
+                                    String opRes = bc.sendTransactionData(operationData, out, in);
+                                    if (opRes.contains("fail")) {
+                                        displayOpError(this, p, opRes);
+                                        p.removeAll();
+                                        p.updateUI();
+                                        successfulLoginMenu(p);
+                                    } else {
+                                        //change the values of the bills available => give out money
+                                        updateBillsValues(blsNeeded);
+                                        //TODO ...not implementing error during changing bills count in the ATM as of right now
+                                        boolean rewritingBillsRes = writeBills();
+//                                      if (!rewritingBillsRes) {
+//                                          displayOpError(this, p);
+//                                          p.removeAll();
+//                                          p.updateUI();
+//                                          successfulLoginMenu(p);
+//                                      } else {
+                                        displayOpSuccess(this, p, opRes);
+                                        p.removeAll();
+                                        p.updateUI();
+                                        successfulLoginMenu(p);
+//                                      }
+                                    }
+                                }
+                                break;
+                            case "confirmTransfer" :
+                                //send data to server for processing
+                                String opRes = bc.sendTransactionData(operationData, out, in);
+                                if (opRes.contains("fail")) {
+                                    displayOpError(this, p, opRes);
+                                    p.removeAll();
+                                    p.updateUI();
+                                    successfulLoginMenu(p);
+                                } else {
+                                    displayOpSuccess(this, p, opRes);
+                                    p.removeAll();
+                                    p.updateUI();
+                                    successfulLoginMenu(p);
+                                }
+                                break;
+                            case "confirmBalances":
+                                //TODO implement at some point
+                                break;
+                        }
+                        confirmingOp = "";
                     }
                     else {
+                        confirmingOp = "";
                         PINTimeout(p);
                     }
-                }
+                    break;
+                case "cashBalances_date":
+                    //TODO validate via db
+                    if(date.getText().length() == 10) {
+                        p.removeAll();
+                        p.updateUI();
+                        nextMenu = "confirmMenu";
+                        confirmingOp = "confirmBalances";
+                        if (!timeout()) {
+                            confirmMenu(p, "confirmBalances");
+                        }
+                        else {
+                            PINTimeout(p);
+                        }
+                    }
+                    break;
             }
         });
 
@@ -1619,34 +1645,36 @@ class Screen extends JFrame {
         p.add(withdrawSumField);
     }
 
-    private  void confirmMenu(JPanel p, String s){
+    private void confirmMenu(JPanel p, String s){
         currentMenu = "confirmMenu";
 
         JLabel l;
         JLabel l1;
         String operation = s;
         //TODO get corresponding data from DB
-        if (operation.equals("confirmWithdrawal")) {
-            String sum = operationData.get(3);
-            //l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
-            l = new JLabel("You are about to withdraw: $" + sum);
-            l.setBounds(150, 60, 320, 30);
-            p.add(l);
-        }
-        else if (operation.equals("confirmTransfer")) {
-            String sum = operationData.get(3);
-            String cardn = operationData.get(4);
-            l = new JLabel("You are about to transfer: $" + sum);
-            l.setBounds(150, 60, 320, 30);
-            p.add(l);
-            l1 = new JLabel("To a card #" + cardn);
-            l1.setBounds(150, 90, 320, 30);
-            p.add(l1);
-        }
-        else if (operation.equals("confirmBalances")) {
-            l = new JLabel("You are about to change balances: ");
-            l.setBounds(150, 60, 320, 30);
-            p.add(l);
+        switch (operation) {
+            case "confirmWithdrawal":
+            {String sum = operationData.get(3);
+                //l = new JLabel("You are about to withdraw: $" + String.valueOf(sum));
+                l = new JLabel("You are about to withdraw: $" + sum);
+                l.setBounds(150, 60, 320, 30);
+                p.add(l);}
+            break;
+            case "confirmTransfer":
+            {String sum = operationData.get(3);
+                String cardn = operationData.get(4);
+                l = new JLabel("You are about to transfer: $" + sum);
+                l.setBounds(150, 60, 320, 30);
+                p.add(l);
+                l1 = new JLabel("To a card #" + cardn);
+                l1.setBounds(150, 90, 320, 30);
+                p.add(l1);}
+            break;
+            case "confirmBalances":
+            {l = new JLabel("You are about to change balances: ");
+                l.setBounds(150, 60, 320, 30);
+                p.add(l);}
+            break;
         }
         p.setVisible(true);
     }
