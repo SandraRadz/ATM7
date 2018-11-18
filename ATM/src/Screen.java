@@ -21,10 +21,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-//TODO add more safe validation (check for sum == 0 etc.)
-//TODO improve UI
-//TODO implement DB integration
-
 class Screen extends JFrame {
 
 
@@ -1056,73 +1052,67 @@ class Screen extends JFrame {
                     operationDataTimeout.add(cardNum);//current client's card number
                     operationDataTimeout.add(new Password(pinTimeout.getText()).getHash()); //pin hash
                     String confPIN = bc.sendTransactionData(operationDataTimeout, out, in);
-//                    if (confPIN.equals("true")){
-//                    if (confPIN.equals("done")){
+
                     if (!confPIN.contains("false") && !confPIN.contains("fail")){
 
-
-
-
-
-
-                    p.removeAll();
-                    p.updateUI();
-                    lastInteractionTime = Instant.now().getEpochSecond();
-                    String nextMenuTmp = nextMenu;
-                    nextMenu = "";
-                    if (nextMenuTmp.equals("cashBalances")){
-                        currentMenu = nextMenuTmp;
-                        cashBalances(p);
-                    }
-                    else if (nextMenuTmp.equals("cashBalances_sum")){
-                        currentMenu = nextMenuTmp;
-                        cashBalances_sum(p);
-                    }
-                    else if (nextMenuTmp.equals("cashBalances_date")){
-                        currentMenu = nextMenuTmp;
-                        cashBalances_date(p);
-                    }
-                    else if (nextMenuTmp.equals("successfulLoginMenu")){
-                        currentMenu = nextMenuTmp;
-                        successfulLoginMenu(p);
-                    }
-                    else if (nextMenuTmp.equals("transferMenu")){
-                        currentMenu = nextMenuTmp;
-                        transferMenu(p);
-                    }
-                    else if (nextMenuTmp.equals("transferMenuSecond")){
-                        currentMenu = nextMenuTmp;
-                        transferMenu(p);
-                    }
-                    else if (nextMenuTmp.equals("balanceMenu")){
-                        currentMenu = nextMenuTmp;
-                        operationData = new ArrayList<String>();
-                        operationData.add("3");//check balance operation code
-                        operationData.add(cardNum);//current client's card number
-                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        String balSum = bc.sendTransactionData(operationData, out, in);
-                        if (!balSum.contains("fail")){
+                        p.removeAll();
+                        p.updateUI();
+                        lastInteractionTime = Instant.now().getEpochSecond();
+                        String nextMenuTmp = nextMenu;
+                        nextMenu = "";
+                        if (nextMenuTmp.equals("cashBalances")){
+                            currentMenu = nextMenuTmp;
+                            cashBalances(p);
+                        }
+                        else if (nextMenuTmp.equals("cashBalances_sum")){
+                            currentMenu = nextMenuTmp;
+                            cashBalances_sum(p);
+                        }
+                        else if (nextMenuTmp.equals("cashBalances_date")){
+                            currentMenu = nextMenuTmp;
+                            cashBalances_date(p);
+                        }
+                        else if (nextMenuTmp.equals("successfulLoginMenu")){
+                            currentMenu = nextMenuTmp;
+                            successfulLoginMenu(p);
+                        }
+                        else if (nextMenuTmp.equals("transferMenu")){
+                            currentMenu = nextMenuTmp;
+                            transferMenu(p);
+                        }
+                        else if (nextMenuTmp.equals("transferMenuSecond")){
+                            currentMenu = nextMenuTmp;
+                            transferMenu(p);
+                        }
+                        else if (nextMenuTmp.equals("balanceMenu")){
+                            currentMenu = nextMenuTmp;
+                            operationData = new ArrayList<String>();
+                            operationData.add("3");//check balance operation code
+                            operationData.add(cardNum);//current client's card number
+                            operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                            String balSum = bc.sendTransactionData(operationData, out, in);
+                            if (!balSum.contains("fail")){
+                                balanceMenu(p, balSum);
+                            }
+                            else {
+                                displayOpError(this, p, "Failed to transfer data.");
+                            }
                             balanceMenu(p, balSum);
                         }
-                        else {
-                            displayOpError(this, p, "Failed to transfer data.");
+                        else if (nextMenuTmp.equals("withdrawMenu")){
+                            currentMenu = nextMenuTmp;
+                            withdrawMenu(p);
                         }
-                        balanceMenu(p, balSum);
+                        else if (nextMenuTmp.equals("confirmMenu")){
+                            currentMenu = nextMenuTmp;
+                            confirmMenu(p, confirmingOp);
+                        }
+                        //just in case
+                        else {
+                            currentMenu = "successfulLoginMenu";
+                            successfulLoginMenu(p);
+                        }
                     }
-                    else if (nextMenuTmp.equals("withdrawMenu")){
-                        currentMenu = nextMenuTmp;
-                        withdrawMenu(p);
-                    }
-                    else if (nextMenuTmp.equals("confirmMenu")){
-                        currentMenu = nextMenuTmp;
-                        confirmMenu(p, confirmingOp);
-                    }
-                    //just in case
-                    else {
-                        currentMenu = "successfulLoginMenu";
-                        successfulLoginMenu(p);
-                    }
-                }
                 }
                 else {
                     userPin.setText("");
@@ -1151,7 +1141,6 @@ class Screen extends JFrame {
             }
             else if(currentMenu.equals("cashBalances_sum") && sum.getText().length() > 0){
                 //TODO validate via db
-                //if(sum.getText().length() == 16) {
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "cashBalances_date";
@@ -1161,7 +1150,6 @@ class Screen extends JFrame {
                 else {
                     PINTimeout(p);
                 }
-                //}
             }
             else if (currentMenu.equals("transferMenu") && transferSumField.getText().length() > 0){
                 p.removeAll();
@@ -1534,9 +1522,6 @@ class Screen extends JFrame {
 
     private  void transferMenuSecond(JPanel p){
         currentMenu = "transferMenuSecond";
-//        JLabel l = new JLabel("Enter recipient number: ");
-//        l.setBounds(150,60,200, 30);
-//        p.add(l);
         JLabel l = new JLabel("Enter the recipient's card number"); //(16 digits)!
         l.setBounds(140,100,250, 30);
         l.setFont(new Font("Georgia", Font.PLAIN, 14));
@@ -1886,9 +1871,6 @@ class Screen extends JFrame {
         dialog.setUndecorated(true);
         dialog.add(err);
         dialog.setVisible(true);
-//        while(true){
-//
-//        }
     }
 
     private  boolean timeout(){
@@ -1912,48 +1894,5 @@ class Screen extends JFrame {
         }
         writeBills();
     }
-//    public  String sendTransactionData(ArrayList<String> data){
-//        try {
-//            ipAddress = InetAddress.getByName(address); // создаем объект который отображает вышеописанный IP-адрес.
-//            socket = new Socket(ipAddress, serverPort); // создаем сокет используя IP-адрес и порт сервера.
-//
-////            InputStream sin = socket.getInputStream();
-////            OutputStream sout = socket.getOutputStream();
-//
-//            // Конвертируем потоки в другой тип, чтоб легче обрабатывать текстовые сообщения.
-//            out = new ObjectOutputStream(socket.getOutputStream());
-//            in = new ObjectInputStream(socket.getInputStream());
-//
-//
-//
-//            // try (ObjectOutputStream oos = new ObjectOutputStream(out)) {
-//            out.writeObject(data);
-//
-//            Object resData;
-//
-//            while (true) {
-//                resData = in.readUTF();//.readObject();
-//                String opRes = (String) resData;
-//                //String opRes = in.readUTF();
-//                if (!opRes.equals(null)) {
-//                    return opRes;
-//                }
-//                else {
-//                    System.err.println("Data streaming to server error!");
-//                }
-//            }
-//
-////            } catch (IOException ex) {
-////                System.err.println("Data streaming to server error!");
-////            }
-//
-//        } catch (UnknownHostException ex){
-//
-//        } catch (IOException ex1){
-//
-//        }
-//        //return "";
-//        return "fail: ERROR sending data to server";
-//    }
 
 }
