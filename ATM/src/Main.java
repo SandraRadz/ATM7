@@ -3,7 +3,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Main {
+class Main {
 
 
     public static void main(String[] args) throws Exception {

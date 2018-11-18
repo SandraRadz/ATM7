@@ -4,10 +4,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-public class BankConnection {
+class BankConnection {
 
 
-    public static String sendTransactionData(ArrayList<String> data, ObjectOutputStream out, ObjectInputStream in){
+    protected  String sendTransactionData(ArrayList<String> data, ObjectOutputStream out, ObjectInputStream in){
         try {
 
 

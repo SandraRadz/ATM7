@@ -2,19 +2,19 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Password {
+class Password {
 
-    public static String pswrd;
+    private  String pswrd;
 
-    public Password(String password){
+    Password(String password){
         this.pswrd = password;
     }
 
-    public String getHash() {
+    String getHash() {
         return SecurePassword(pswrd,"");
     }
 
-    private static String SecurePassword(String passwordToHash, String salt){
+    private  String SecurePassword(String passwordToHash, String salt){
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");

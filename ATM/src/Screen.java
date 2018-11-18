@@ -25,40 +25,41 @@ import java.util.concurrent.TimeUnit;
 //TODO improve UI
 //TODO implement DB integration
 
-public class Screen extends JFrame {
+class Screen extends JFrame {
 
 
-    static private String currentMenu = "";
-    static private String confirmingOp = "";
-    static private String nextMenu = "";
-    static private JPasswordField pin;
-    static private JPasswordField pinTimeout;
-    static private JTextArea card;
-    static private JTextArea sum;
-    static private JTextField userPin = new JTextField();
-    static private JTextField transferSumField;
-    static private JTextField transferRecipientNum;
-    static private JTextField withdrawSumField;
-    static private JTextArea date;
-    static private long lastInteractionTime;
+     private String currentMenu = "";
+     private String confirmingOp = "";
+     private String nextMenu = "";
+     private JPasswordField pin;
+     private JPasswordField pinTimeout;
+     private JTextArea card;
+     private JTextArea sum;
+     private JTextField userPin = new JTextField();
+     private JTextField transferSumField;
+     private JTextField transferRecipientNum;
+     private JTextField withdrawSumField;
+     private JTextArea date;
+     private long lastInteractionTime;
 
-    //static private int[] operationData;
-    static private ArrayList<String> operationData;
+    // private int[] operationData;
+     private ArrayList<String> operationData;
 
-    private static ObjectOutputStream out;
-    private static ObjectInputStream in;
+     private BankConnection bc = new BankConnection();
+    private  ObjectOutputStream out;
+    private  ObjectInputStream in;
 
-    static int serverPort = 6666; // здесь обязательно нужно указать порт к которому привязывается сервер.
-    static String address = "127.0.0.1"; // это IP-адрес компьютера, где исполняется наша серверная программа.
+     int serverPort = 6666; // здесь обязательно нужно указать порт к которому привязывается сервер.
+     String address = "127.0.0.1"; // это IP-адрес компьютера, где исполняется наша серверная программа.
 
-    private static InetAddress ipAddress;
-    private static Socket socket;
+    private  InetAddress ipAddress;
+    private  Socket socket;
 
-    static private String cardNum = "2222222222222221"; //16 digit; tmp number
+     private String cardNum = "2222222222222221"; //16 digit; tmp number
 
     //fillATMwMoney(): max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
-    static private int[] bills = new int[6];
+     private int[] bills = new int[6];
 
     public Screen () throws Exception {
         this.setTitle("ATM 7");
@@ -481,7 +482,7 @@ public class Screen extends JFrame {
                     operationData.add("3");//check balance operation code
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String balSum = BankConnection.sendTransactionData(operationData, out, in);
+                    String balSum = bc.sendTransactionData(operationData, out, in);
                     if (!balSum.contains("fail")){
                         balanceMenu(p, balSum);
                     }
@@ -1030,7 +1031,7 @@ public class Screen extends JFrame {
                     operationData.add("0");//check pin
                     operationData.add(cardNum);//current client's card number
                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                    String confPIN = BankConnection.sendTransactionData(operationData, out, in);
+                    String confPIN = bc.sendTransactionData(operationData, out, in);
 //                    if (confPIN.equals("true")){
 //                    if (confPIN.equals("done")){
                     if (!confPIN.contains("false") && !confPIN.contains("fail")){
@@ -1054,7 +1055,7 @@ public class Screen extends JFrame {
                     operationDataTimeout.add("0");//check pin
                     operationDataTimeout.add(cardNum);//current client's card number
                     operationDataTimeout.add(new Password(pinTimeout.getText()).getHash()); //pin hash
-                    String confPIN = BankConnection.sendTransactionData(operationDataTimeout, out, in);
+                    String confPIN = bc.sendTransactionData(operationDataTimeout, out, in);
 //                    if (confPIN.equals("true")){
 //                    if (confPIN.equals("done")){
                     if (!confPIN.contains("false") && !confPIN.contains("fail")){
@@ -1099,7 +1100,7 @@ public class Screen extends JFrame {
                         operationData.add("3");//check balance operation code
                         operationData.add(cardNum);//current client's card number
                         operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        String balSum = BankConnection.sendTransactionData(operationData, out, in);
+                        String balSum = bc.sendTransactionData(operationData, out, in);
                         if (!balSum.contains("fail")){
                             balanceMenu(p, balSum);
                         }
@@ -1255,7 +1256,7 @@ public class Screen extends JFrame {
                         } else {
 
                             //send data to server for processing
-                            String opRes = BankConnection.sendTransactionData(operationData, out, in);
+                            String opRes = bc.sendTransactionData(operationData, out, in);
                             if (opRes.contains("fail")) {
                                 displayOpError(this, p, opRes);
                                 p.removeAll();
@@ -1284,7 +1285,7 @@ public class Screen extends JFrame {
                     }
                     else if (confirmingOp == "confirmTransfer"){
                         //send data to server for processing
-                        String opRes = BankConnection.sendTransactionData(operationData, out, in);
+                        String opRes = bc.sendTransactionData(operationData, out, in);
                         if (opRes.contains("fail")) {
                             displayOpError(this, p, opRes);
                             p.removeAll();
@@ -1349,7 +1350,7 @@ public class Screen extends JFrame {
     }
 
     //PIN entering
-    private static void PIN(JPanel p){
+    private  void PIN(JPanel p){
         currentMenu = "PIN";
         JLabel l = new JLabel("Enter your PIN here: ", SwingConstants.CENTER);
         l.setBounds(150,100,200, 30);
@@ -1366,7 +1367,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void PINTimeout(JPanel p){
+    private  void PINTimeout(JPanel p){
         currentMenu = "PINTimeout";
         JLabel l = new JLabel("Session timeout. Please, re-enter your PIN: ", SwingConstants.CENTER);
         l.setBounds(100,100,300, 30);
@@ -1385,7 +1386,7 @@ public class Screen extends JFrame {
 
 
     //Processing of cash balances
-    private static void cashBalances (JPanel p){
+    private  void cashBalances (JPanel p){
         currentMenu = "cashBalances";
         JLabel l = new JLabel("Processing of cash balances");
         l.setBounds(120,50,300, 30);
@@ -1413,7 +1414,7 @@ public class Screen extends JFrame {
 
 
     //Processing of cash balances --> choosing sum
-    private static void cashBalances_sum (JPanel p) {
+    private  void cashBalances_sum (JPanel p) {
         currentMenu = "cashBalances_sum";
         JLabel l = new JLabel("Processing of cash balances");
         l.setBounds(120, 50, 300, 30);
@@ -1439,7 +1440,7 @@ public class Screen extends JFrame {
     }
 
     //Processing of cash balances --> choosing date
-    private static void cashBalances_date (JPanel p) {
+    private  void cashBalances_date (JPanel p) {
         currentMenu = "cashBalances_date";
 
         JLabel l1 = new JLabel("Choose start paying date (format: yyyy-MM-dd): ");
@@ -1476,7 +1477,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void successfulLoginMenu(JPanel p){
+    private  void successfulLoginMenu(JPanel p){
         currentMenu = "successfulLoginMenu";
         JLabel l = new JLabel("Welcome. Please, select the operation:");
         l.setBounds(135,60,300, 30);
@@ -1515,7 +1516,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void transferMenu(JPanel p){
+    private  void transferMenu(JPanel p){
         currentMenu = "transferMenu";
         JLabel l = new JLabel("Enter amount to transfer: ");
         l.setBounds(150,60,200, 30);
@@ -1531,7 +1532,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void transferMenuSecond(JPanel p){
+    private  void transferMenuSecond(JPanel p){
         currentMenu = "transferMenuSecond";
 //        JLabel l = new JLabel("Enter recipient number: ");
 //        l.setBounds(150,60,200, 30);
@@ -1552,7 +1553,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void balanceMenu(JPanel p, String balSum){
+    private  void balanceMenu(JPanel p, String balSum){
         currentMenu = "balanceMenu";
         //TODO get balance via DB
         JLabel l = new JLabel("Your balance is: $" + balSum);
@@ -1561,7 +1562,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
 
-    private static void withdrawMenu(JPanel p){
+    private  void withdrawMenu(JPanel p){
         currentMenu = "withdrawMenu";
 
 
@@ -1632,7 +1633,7 @@ public class Screen extends JFrame {
         p.add(withdrawSumField);
     }
 
-    private static void confirmMenu(JPanel p, String s){
+    private  void confirmMenu(JPanel p, String s){
         currentMenu = "confirmMenu";
 
         JLabel l;
@@ -1664,7 +1665,7 @@ public class Screen extends JFrame {
         p.setVisible(true);
     }
     //Additional methods
-    public static void setUIFont(javax.swing.plaf.FontUIResource f)
+    public  void setUIFont(javax.swing.plaf.FontUIResource f)
     {
         java.util.Enumeration keys = UIManager.getDefaults().keys();
         while(keys.hasMoreElements())
@@ -1675,32 +1676,32 @@ public class Screen extends JFrame {
         }
     }
 
-    private static class RoundedBorder implements Border {
+//    private  class RoundedBorder implements Border {
+//
+//        private int radius;
+//
+//
+//        RoundedBorder(int radius) {
+//            this.radius = radius;
+//        }
+//
+//
+//        public Insets getBorderInsets(Component c) {
+//            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+//        }
+//
+//
+//        public boolean isBorderOpaque() {
+//            return true;
+//        }
+//
+//
+//        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+//            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+//        }
+//    }
 
-        private int radius;
-
-
-        RoundedBorder(int radius) {
-            this.radius = radius;
-        }
-
-
-        public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
-        }
-
-
-        public boolean isBorderOpaque() {
-            return true;
-        }
-
-
-        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
-        }
-    }
-
-    private static boolean readBills(){
+    private  boolean readBills(){
         try (FileInputStream fis = new FileInputStream("bills.ser")){
             try (ObjectInputStream ois = new ObjectInputStream(fis)){
                 bills = ((int[]) ois.readObject());
@@ -1718,7 +1719,7 @@ public class Screen extends JFrame {
         return true;
     }
 
-    private static boolean writeBills(){
+    private  boolean writeBills(){
         try (FileOutputStream fos = new FileOutputStream("bills.ser")){
             try (ObjectOutputStream oos = new ObjectOutputStream(fos)){
                 oos.writeObject(bills);
@@ -1734,7 +1735,7 @@ public class Screen extends JFrame {
         return true;
     }
 
-    private static int[] calcNeededBills(int sumReq){
+    private  int[] calcNeededBills(int sumReq){
 //TODO implement bills counting
         int[] blsNeeded = new int[6];
         int sumPossible = sumReq;
@@ -1746,13 +1747,6 @@ public class Screen extends JFrame {
         int a50 = bills[3];
         int a20 = bills[4];
         int a10 = bills[5];
-
-//        int r500 = 0;
-//        int r200 = 0;
-//        int r100 = 0;
-//        int r50 = 0;
-//        int r20 = 0;
-//        int r10 = 0;
 
         //required bills
         int w500 = sumPossible / 500;
@@ -1829,14 +1823,14 @@ public class Screen extends JFrame {
         return new int[0];
     }
 
-    private static void updateBillsValues(int[] blsNeeded){
+    private  void updateBillsValues(int[] blsNeeded){
         for (int i = 0; i < blsNeeded.length; i++){
             bills[i] = bills[i] - blsNeeded[i];
         }
         return;
     }
 
-    private static void displayOpSuccess(Screen sc, JPanel p, String opRes) {
+    private  void displayOpSuccess(Screen sc, JPanel p, String opRes) {
         //JOptionPane.showMessageDialog(this, "Operation successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Success", true);
         //dialog.setSize(200,200);
@@ -1859,7 +1853,7 @@ public class Screen extends JFrame {
         dialog.setVisible(true);
     }
 
-    private static void displayOpError(Screen sc, JPanel p, String opRes){
+    private  void displayOpError(Screen sc, JPanel p, String opRes){
         operationData = new ArrayList<String>();
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
@@ -1880,7 +1874,7 @@ public class Screen extends JFrame {
         dialog.setVisible(true);
     }
 
-    private static void displayOpError(Screen sc, JPanel p, String state, String diagn){
+    private  void displayOpError(Screen sc, JPanel p, String state, String diagn){
         operationData = new ArrayList<String>();
         //JOptionPane.showMessageDialog(this, "Operation error!","Error", JOptionPane.ERROR_MESSAGE);
         final JDialog dialog = new JDialog(sc, "Error", true);
@@ -1897,7 +1891,7 @@ public class Screen extends JFrame {
 //        }
     }
 
-    private static boolean timeout(){
+    private  boolean timeout(){
         long currTime = Instant.now().getEpochSecond();
         if ((currTime - lastInteractionTime) > 300) {
             lastInteractionTime = Instant.now().getEpochSecond();
@@ -1906,19 +1900,19 @@ public class Screen extends JFrame {
         return false;
     }
 
-    private static void fillATMwMoney(){
+    private  void fillATMwMoney(){
         for (int i = 5; i < 11; i++){
             bills[(i-5)] = i*100;
         }
         writeBills();
     }
-    private static void fillATMwLittleMoney(){
+    private  void fillATMwLittleMoney(){
         for (int i = 5; i < 11; i++){
             bills[(i-5)] = i;
         }
         writeBills();
     }
-//    public static String sendTransactionData(ArrayList<String> data){
+//    public  String sendTransactionData(ArrayList<String> data){
 //        try {
 //            ipAddress = InetAddress.getByName(address); // создаем объект который отображает вышеописанный IP-адрес.
 //            socket = new Socket(ipAddress, serverPort); // создаем сокет используя IP-адрес и порт сервера.
