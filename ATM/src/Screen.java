@@ -1173,21 +1173,21 @@ class Screen extends JFrame {
                     PINTimeout(p);
                 }
             }
-            else if (currentMenu.equals("transferMenuSecond")){
+            else if (currentMenu.equals("transferMenuSecond") && transferRecipientNum.getText().length() == 16){
                 //TODO check via DB
                 p.removeAll();
                 p.updateUI();
                 nextMenu = "confirmMenu";
                 confirmingOp = "confirmTransfer";
                 if (!timeout()) {
-                    if (transferRecipientNum.getText().length() == 16) {
+                    //if (transferRecipientNum.getText().length() == 16) {
                         operationData.add(transferRecipientNum.getText());//recipient card number
                         confirmMenu(p, "confirmTransfer");
-                    } else {
+                    //} else {
                         //failed to transfer
                         //TODO check if needed at all
                         //successfulLoginMenu(p);
-                    }
+                    //}
                 }
                 else {
                     PINTimeout(p);
