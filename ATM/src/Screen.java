@@ -56,7 +56,7 @@ public class Screen extends JFrame {
 
     static private String cardNum = "2222222222222221"; //16 digit; tmp number
 
-    //max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
+    //fillATMwMoney(): max money available in ATM = 508000 == (500*500) + (200 * 600) + (100 * 700) + (50 * 800) + (20 * 900) + (10 * 1000)
     //saved in order: [0] - 500s; [1] - 200s; [2] - 100s; [3] - 50s; [4] - 20s; [5] - 10s.
     static private int[] bills = new int[6];
 
@@ -246,7 +246,8 @@ public class Screen extends JFrame {
 
         JButton b_quit = new JButton("QUIT");
         b_quit.setBounds(30,159,140,33);
-        b_quit.setBackground(new Color(64,128,128));
+//        b_quit.setBackground(new Color(64,128,128));
+        b_quit.setBackground(new Color(105,115,127));
         b_quit.setForeground(Color.WHITE);
         b_quit.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b_quit.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
@@ -267,7 +268,8 @@ public class Screen extends JFrame {
 
         JButton b_grate = new JButton("#");
         b_grate.setBounds(330,159,140,33);
-        b_grate.setBackground(new Color(64,128,128));
+        //b_grate.setBackground(new Color(64,128,128));
+        b_grate.setBackground(new Color(105,115,127));
         b_grate.setForeground(Color.WHITE);
         b_grate.setFont(new Font("Tahoma", Font.PLAIN, 18));
         b_grate.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
@@ -277,7 +279,8 @@ public class Screen extends JFrame {
 
         JButton cancel = new JButton("Cancel");
         cancel.setBounds(30,202,140,33);
-        cancel.setBackground(new Color(64,128,128));
+//        cancel.setBackground(new Color(64,128,128));
+        cancel.setBackground(new Color(105,115,127));
         cancel.setForeground(Color.WHITE);
         cancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
         cancel.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
@@ -287,7 +290,8 @@ public class Screen extends JFrame {
 
         JButton delete = new JButton("Delete");
         delete.setBounds(180,202,140,33);
-        delete.setBackground(new Color(64,128,128));
+        //delete.setBackground(new Color(64,128,128));
+        delete.setBackground(new Color(105,115,127));
         delete.setForeground(Color.WHITE);
         delete.setFont(new Font("Tahoma", Font.PLAIN, 18));
         delete.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
@@ -297,7 +301,8 @@ public class Screen extends JFrame {
 
         JButton ok = new JButton("OK");
         ok.setBounds(330,202,140,33);
-        ok.setBackground(new Color(64,128,128));
+//        ok.setBackground(new Color(64,128,128));
+        ok.setBackground(new Color(105,115,127));
         ok.setForeground(Color.WHITE);
         ok.setFont(new Font("Tahoma", Font.PLAIN, 18));
         ok.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
@@ -716,6 +721,8 @@ public class Screen extends JFrame {
         });
 
         b_quit.addActionListener((ActionEvent e) -> {
+            userPin.setText("");
+
             if (currentMenu.equals("PIN")){
                 p.removeAll();
                 p.updateUI();
@@ -776,6 +783,7 @@ public class Screen extends JFrame {
         b0.addActionListener((ActionEvent e) -> {
             if (currentMenu.equals("PIN") && pin.getText().length() < 4){
                 pin.setText(pin.getText()+"0");
+                userPin.setText(userPin.getText()+"0");
             }
             else if (currentMenu.equals("PINTimeout") && pinTimeout.getText().length() < 4){
                 pinTimeout.setText(pinTimeout.getText()+"0");
