@@ -1203,11 +1203,19 @@ class Screen extends JFrame {
 
                         operationData.add(transferRecipientNum.getText());//recipient card number
 
-                        if (!timeout()) {
-                            confirmMenu(p, "confirmTransfer");
+                        if (operationData.get(1).equals(operationData.get(4))){
+//                            displayOpError(this, p, "Recipient's (beneficiary's) card number is the same as the sender's (benefactor's).");
+                            displayOpError(this, p, "Recipient's card number is the same as the sender's one.");
+                            p.removeAll();
+                            p.updateUI();
+                            successfulLoginMenu(p);
                         }
                         else {
-                            PINTimeout(p);
+                            if (!timeout()) {
+                                confirmMenu(p, "confirmTransfer");
+                            } else {
+                                PINTimeout(p);
+                            }
                         }
                     }
                     break;
