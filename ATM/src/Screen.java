@@ -1179,19 +1179,15 @@ class Screen extends JFrame {
                         p.removeAll();
                         p.updateUI();
                         nextMenu = "transferMenuSecond";
+
+                        operationData = new ArrayList<String>();
+                        operationData.add("1");//transfer operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                        operationData.add(transferSumField.getText());//transfer sum
+
                         if (!timeout()) {
-                            if (true) { //TODO validate and check via DB
-                                operationData = new ArrayList<String>();
-                                operationData.add("1");//transfer operation code
-                                operationData.add(cardNum);//current client's card number
-                                operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                                operationData.add(transferSumField.getText());//transfer sum
-                                transferMenuSecond(p);
-                            }
-                            else {
-                                //failed to transfer
-                                successfulLoginMenu(p);
-                            }
+                            transferMenuSecond(p);
                         }
                         else {
                             PINTimeout(p);
@@ -1200,20 +1196,15 @@ class Screen extends JFrame {
                     break;
                 case "transferMenuSecond":
                     if  (transferRecipientNum.getText().length() == 16){
-                        //TODO check via DB
                         p.removeAll();
                         p.updateUI();
                         nextMenu = "confirmMenu";
                         confirmingOp = "confirmTransfer";
+
+                        operationData.add(transferRecipientNum.getText());//recipient card number
+
                         if (!timeout()) {
-                            //if (transferRecipientNum.getText().length() == 16) {
-                            operationData.add(transferRecipientNum.getText());//recipient card number
                             confirmMenu(p, "confirmTransfer");
-                            //} else {
-                            //failed to transfer
-                            //TODO check if needed at all
-                            //successfulLoginMenu(p);
-                            //}
                         }
                         else {
                             PINTimeout(p);
@@ -1237,18 +1228,15 @@ class Screen extends JFrame {
                         p.updateUI();
                         nextMenu = "confirmMenu";
                         confirmingOp = "confirmWithdrawal";
+
+                        operationData = new ArrayList<String>();
+                        operationData.add("2");//withdrawal operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                        operationData.add(withdrawSumField.getText());//withdrawal sum
+
                         if (!timeout()) {
-                            if (true) { //TODO validate and check via DB
-                                operationData = new ArrayList<String>();
-                                operationData.add("2");//withdrawal operation code
-                                operationData.add(cardNum);//current client's card number
-                                operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                                operationData.add(withdrawSumField.getText());//withdrawal sum
-                                confirmMenu(p, "confirmWithdrawal");
-                            } else {
-                                //failed to withdraw
-                                successfulLoginMenu(p);
-                            }
+                            confirmMenu(p, "confirmWithdrawal");
                         }
                         else {
                             PINTimeout(p);
@@ -1258,7 +1246,9 @@ class Screen extends JFrame {
                 case "confirmMenu":
                     p.removeAll();
                     p.updateUI();
-                    nextMenu = "successfulLoginMenu";
+                    //nextMenu = "successfulLoginMenu";
+                    //TODO important notice (!) - in case of timeout during confirmation, the client is returned back to the confirmation (once again) after enetirng timeout_pin successfully.
+                    nextMenu = "confirmMenu";
                     if (!timeout()){
                         switch (confirmingOp){
                             case "confirmWithdrawal" :
@@ -1288,10 +1278,13 @@ class Screen extends JFrame {
 //                                          p.updateUI();
 //                                          successfulLoginMenu(p);
 //                                      } else {
-                                        displayOpSuccess(this, p, opRes);
+
+                                        //displayOpSuccess(this, p, opRes);
+                                        displayOpSuccess(this, p, "receive the money.");
                                         p.removeAll();
                                         p.updateUI();
                                         successfulLoginMenu(p);
+
 //                                      }
                                     }
                                 }
@@ -1305,7 +1298,8 @@ class Screen extends JFrame {
                                     p.updateUI();
                                     successfulLoginMenu(p);
                                 } else {
-                                    displayOpSuccess(this, p, opRes);
+                                    //displayOpSuccess(this, p, opRes);
+                                    displayOpSuccess(this, p, "transfer completed.");
                                     p.removeAll();
                                     p.updateUI();
                                     successfulLoginMenu(p);
@@ -1318,7 +1312,7 @@ class Screen extends JFrame {
                         confirmingOp = "";
                     }
                     else {
-                        confirmingOp = "";
+                        //confirmingOp = "";
                         PINTimeout(p);
                     }
                     break;
@@ -1360,7 +1354,7 @@ class Screen extends JFrame {
         boolean getBillsInfo = readBills();
         if (!getBillsInfo){
             displayOpError(this, p, "NON_OPERATIONAL_STATE", "CALL_ATM_SERVICE");
-            //+ alt+f4 should exit program fully
+            //TODO alt+f4 should exit program fully
         }
     }
 
