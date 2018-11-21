@@ -1579,62 +1579,70 @@ class Screen extends JFrame {
     private  void withdrawMenu(JPanel p){
         currentMenu = "withdrawMenu";
 
-
-
         JLabel l = new JLabel("Available banknotes are: ");
-        l.setBounds(150,30,200, 30);
+        l.setBounds(170,30,200, 30);
         p.add(l);
-        //TODO list banknotes w/ amounts
-        JLabel l500 = new JLabel("$500 ", SwingConstants.CENTER);
-        l500.setBounds(90,60,35, 30);
+
+        JPanel panelBills = new JPanel();
+        // Setting rows to 0 means that new rows are added as needed
+        panelBills.setLayout(new GridLayout(0, 6, 15, 0));
+        panelBills.setBounds(100, 60, 300, 30);
+        panelBills.setOpaque(true);
+        panelBills.setBackground(Color.white);
+
+        JLabel l500 = new JLabel("$500", SwingConstants.CENTER);
+//        l500.setBounds(90,60,35, 30);
+//        l500.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
         if(bills[0] == 0){
             l500.setOpaque(true);
             l500.setBackground(Color.lightGray);
         }
-        p.add(l500);
+        panelBills.add(l500);
 
-        JLabel l200 = new JLabel("$200 ", SwingConstants.CENTER);
-        l200.setBounds(120,60,35, 30);
+        JLabel l200 = new JLabel("$200", SwingConstants.CENTER);
+//        l200.setBounds(120,60,35, 30);
         if(bills[1] == 0){
             l200.setOpaque(true);
             l200.setBackground(Color.lightGray);
         }
-        p.add(l200);
+        panelBills.add(l200);
 
-        JLabel l100 = new JLabel("$100 ", SwingConstants.CENTER);
-        l100.setBounds(150,60,35, 30);
+        JLabel l100 = new JLabel("$100", SwingConstants.CENTER);
+//        l100.setBounds(150,60,35, 30);
         if(bills[2] == 0){
             l100.setOpaque(true);
             l100.setBackground(Color.lightGray);
         }
-        p.add(l100);
+        panelBills.add(l100);
 
-        JLabel l50 = new JLabel("$50 ", SwingConstants.CENTER);
-        l50.setBounds(180,60,30, 30);
+        JLabel l50 = new JLabel("$50", SwingConstants.CENTER);
+//        l50.setBounds(180,60,30, 30);
         if(bills[3] == 0){
             l50.setOpaque(true);
             l50.setBackground(Color.lightGray);
         }
-        p.add(l50);
+        panelBills.add(l50);
 
-        JLabel l20 = new JLabel("$20 ", SwingConstants.CENTER);
-        l20.setBounds(210,60,30, 30);
+        JLabel l20 = new JLabel("$20", SwingConstants.CENTER);
+//        l20.setBounds(210,60,30, 30);
         if(bills[4] == 0){
             l20.setOpaque(true);
             l20.setBackground(Color.lightGray);
         }
-        p.add(l20);
+        panelBills.add(l20);
 
         JLabel l10 = new JLabel("$10", SwingConstants.CENTER);
-        l10.setBounds(240,60,30, 30);
+        //l10.setBounds(240,60,30, 30);
         if(bills[5] == 0){
             l10.setOpaque(true);
             l10.setBackground(Color.lightGray);
         }
-        p.add(l10);
+        panelBills.add(l10);
+
+        p.add(panelBills);
 
         JLabel l1 = new JLabel("Enter amount for withdrawal: ");
-        l1.setBounds(150,90,200, 30);
+        l1.setBounds(160,90,200, 30);
         p.add(l1);
         p.setVisible(true);
 
