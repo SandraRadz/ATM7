@@ -8,5 +8,5 @@ public interface CardDao {
     //void changeCash (String cardNum, double sum);
     String changeCash (String cardNum, double sum);
     boolean existCard (String cardNum);
-    String getOwnerNeme(String cardNum);
+    String getOwnerName(String cardNum);
 }

@@ -42,7 +42,7 @@ public class CardServiceImpl implements CardService {
     public String makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
         String res="";
         CardDaoImpl cd = new CardDaoImpl();
-        if(cd.getSum(cardNumFrom)>=sum) {
+        if(cd.getSum(cardNumFrom)>=sum && cd.existCard(cardNumTo)) {
             res=cd.changeCash(cardNumFrom, -sum);
             cd.changeCash(cardNumTo, sum);
             WriteOffDaoImpl wd = new WriteOffDaoImpl();
@@ -57,6 +57,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public String checkUser(String cardNum) {
         CardDaoImpl cd = new CardDaoImpl();
-        return cd.getOwnerNeme(cardNum);
+        return cd.getOwnerName(cardNum);
     }
+
 }

@@ -94,7 +94,7 @@ public class CardDaoImpl implements CardDao {
     }
 
     @Override
-    public String getOwnerNeme(String cardNum) {
+    public String getOwnerName(String cardNum) {
         String res="no_user";
         String query ="SELECT user FROM card WHERE number = ?;";
         try(PreparedStatement preparedStatement = con.prepareStatement(query)) {
