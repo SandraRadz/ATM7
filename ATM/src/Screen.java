@@ -1242,8 +1242,9 @@ class Screen extends JFrame {
 //                            operationDataTmp.add(operationData.get(2));
                             operationDataTmp.add(operationData.get(4));
                             recipientCredentials = bc.sendTransactionData(operationDataTmp, out, in);
-                            if (recipientCredentials.contains("fail")) {
-                                displayOpError(this, p, recipientCredentials);
+//                            if (recipientCredentials.contains("fail")) {
+                            if (recipientCredentials.contains("no_user")) {
+                                displayOpError(this, p, "No client with such credit card number found.");
                                 p.removeAll();
                                 p.updateUI();
                                 successfulLoginMenu(p);
