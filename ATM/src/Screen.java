@@ -28,6 +28,7 @@ class Screen extends JFrame {
      private String currentMenu = "";
      private String confirmingOp = "";
      private String nextMenu = "";
+     private String recipientCredentials = "";
      private JPasswordField pin;
      private JPasswordField pinTimeout;
      private JTextArea card;
@@ -394,6 +395,11 @@ class Screen extends JFrame {
 //                  if (!timeout()) cashBalances(p);
 //                  else  PINTimeout(p);
 //              }
+                    p.removeAll();
+                    p.updateUI();
+                    nextMenu =  "withdrawMenu";
+                    if (!timeout()) withdrawMenu(p);
+                    else PINTimeout(p);
                     break;
                 case "cashBalances_sum":
                     if (sum.getText().length() < 6) {
@@ -449,11 +455,29 @@ class Screen extends JFrame {
                         card.setText(card.getText()+"3");
                     }
                 case "successfulLoginMenu":
+//                    p.removeAll();
+//                    p.updateUI();
+//                    nextMenu =  "withdrawMenu";
+//                    if (!timeout()) withdrawMenu(p);
+//                    else PINTimeout(p);
                     p.removeAll();
                     p.updateUI();
-                    nextMenu =  "withdrawMenu";
-                    if (!timeout()) withdrawMenu(p);
-                    else PINTimeout(p);
+                    nextMenu =  "balanceMenu";
+
+                    readBills();
+
+                    if (!timeout()) {
+                        operationData = new ArrayList<String>();
+                        operationData.add("3");//check balance operation code
+                        operationData.add(cardNum);//current client's card number
+                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+                        String balSum = bc.sendTransactionData(operationData, out, in);
+                        if (!balSum.contains("fail")) balanceMenu(p, balSum);
+                        else displayOpError(this, p, "Failed to transfer data.");
+                    }
+                    else {
+                        PINTimeout(p);
+                    }
                     break;
                 case "cashBalances_sum":
                     if (sum.getText().length() < 6) {
@@ -506,24 +530,24 @@ class Screen extends JFrame {
                         card.setText(card.getText()+"4");
                     }
                 case "successfulLoginMenu":
-                    p.removeAll();
-                    p.updateUI();
-                    nextMenu =  "balanceMenu";
-
-                    readBills();
-
-                    if (!timeout()) {
-                        operationData = new ArrayList<String>();
-                        operationData.add("3");//check balance operation code
-                        operationData.add(cardNum);//current client's card number
-                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
-                        String balSum = bc.sendTransactionData(operationData, out, in);
-                        if (!balSum.contains("fail")) balanceMenu(p, balSum);
-                        else displayOpError(this, p, "Failed to transfer data.");
-                    }
-                    else {
-                        PINTimeout(p);
-                    }
+//                    p.removeAll();
+//                    p.updateUI();
+//                    nextMenu =  "balanceMenu";
+//
+//                    readBills();
+//
+//                    if (!timeout()) {
+//                        operationData = new ArrayList<String>();
+//                        operationData.add("3");//check balance operation code
+//                        operationData.add(cardNum);//current client's card number
+//                        operationData.add(new Password(userPin.getText()).getHash()); //pin hash
+//                        String balSum = bc.sendTransactionData(operationData, out, in);
+//                        if (!balSum.contains("fail")) balanceMenu(p, balSum);
+//                        else displayOpError(this, p, "Failed to transfer data.");
+//                    }
+//                    else {
+//                        PINTimeout(p);
+//                    }
                     break;
                 case "cashBalances_sum":
                     if (sum.getText().length() < 6) {
@@ -1127,8 +1151,9 @@ class Screen extends JFrame {
                                     operationData.add(new Password(userPin.getText()).getHash()); //pin hash
                                     String balSum = bc.sendTransactionData(operationData, out, in);
                                     if (!balSum.contains("fail")) balanceMenu(p, balSum);
-                                    else displayOpError(this, p, "Failed to transfer data.");
-                                    balanceMenu(p, balSum);
+                                    //else displayOpError(this, p, "Failed to transfer data.");
+                                    else displayOpError(this, p, "Failed to fetch balance data.");
+                                    successfulLoginMenu(p);
                                     break;
                                 case "withdrawMenu":
                                     currentMenu = nextMenuTmp;
@@ -1211,10 +1236,23 @@ class Screen extends JFrame {
                             successfulLoginMenu(p);
                         }
                         else {
-                            if (!timeout()) {
-                                confirmMenu(p, "confirmTransfer");
+                            ArrayList<String> operationDataTmp = new ArrayList<String>();
+                            operationDataTmp.add("4");
+//                            operationDataTmp.add(operationData.get(1));
+//                            operationDataTmp.add(operationData.get(2));
+                            operationDataTmp.add(operationData.get(4));
+                            recipientCredentials = bc.sendTransactionData(operationDataTmp, out, in);
+                            if (recipientCredentials.contains("fail")) {
+                                displayOpError(this, p, recipientCredentials);
+                                p.removeAll();
+                                p.updateUI();
+                                successfulLoginMenu(p);
                             } else {
-                                PINTimeout(p);
+                                if (!timeout()) {
+                                    confirmMenu(p, "confirmTransfer");
+                                } else {
+                                    PINTimeout(p);
+                                }
                             }
                         }
                     }
@@ -1520,10 +1558,10 @@ class Screen extends JFrame {
 //        JLabel lOptions2 = new JLabel("2 - Money excesses management"); //TODO Remove for now.
 //        lOptions2.setBounds(150,120,300, 30);
 //        p.add(lOptions2);
-        JLabel lOptions3 = new JLabel("3 - Withdraw");
+        JLabel lOptions3 = new JLabel("2 - Withdraw");
         lOptions3.setBounds(195,120,200, 30); //y = 150
         p.add(lOptions3);
-        JLabel lOptions4 = new JLabel("4 - Check balance");
+        JLabel lOptions4 = new JLabel("3 - Check balance");
         lOptions4.setBounds(195,150,200, 30); //y = 180
         p.add(lOptions4);
 //        JLabel lOptions5 = new JLabel("Cancel - Quit");
@@ -1660,8 +1698,8 @@ class Screen extends JFrame {
 
         JLabel l;
         JLabel l1;
+        JLabel l2;
         String operation = s;
-        //TODO get corresponding data from DB
         switch (operation) {
             case "confirmWithdrawal":
             {String sum = operationData.get(3);
@@ -1678,7 +1716,11 @@ class Screen extends JFrame {
                 p.add(l);
                 l1 = new JLabel("To a card #" + cardn);
                 l1.setBounds(150, 90, 320, 30);
-                p.add(l1);}
+                p.add(l1);
+                l2 = new JLabel("Which belongs to: " + recipientCredentials);
+                l2.setBounds(150, 120, 320, 30);
+                p.add(l2);}
+
             break;
             case "confirmBalances":
             {l = new JLabel("You are about to change balances: ");
@@ -1760,7 +1802,6 @@ class Screen extends JFrame {
     }
 
     private  int[] calcNeededBills(int sumReq){
-//TODO implement bills counting
         int[] blsNeeded = new int[6];
         int sumPossible = sumReq;
 
