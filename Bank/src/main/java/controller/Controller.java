@@ -70,8 +70,15 @@ public class Controller {
         String res;
         double s = Double.parseDouble(sum);
         CardServiceImpl cs = new CardServiceImpl();
-        res=cs.makeTransaction(cardFrom, pin, s ,cardTo );
-        System.out.println("RESULT "+res);
+        try {
+            res = cs.makeTransaction(cardFrom, pin, s, cardTo);
+        }
+        catch (ArithmeticException e){
+            res=e.getMessage();
+        }
+        catch (NullPointerException e){
+            res=e.getMessage();
+        }
         return res;
     }
 
@@ -81,10 +88,16 @@ public class Controller {
     }
 
     public String getCash(String cardNum, String pin, String sum){
-        String res;
+        String res="";
         double s = Double.parseDouble(sum);
         CardServiceImpl cs = new CardServiceImpl();
-        res=cs.getCash(cardNum, pin, s);
+       try {
+           res = cs.getCash(cardNum, pin, s);
+       }
+       catch (ArithmeticException e){
+           res=e.getMessage();
+           System.out.println(res);
+       }
         return res;
     }
 

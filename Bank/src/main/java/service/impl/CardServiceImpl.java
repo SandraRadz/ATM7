@@ -25,31 +25,28 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public String getCash(String cardNum, String pin, double sum) {
-        String res="";
+        String res;
         CardDaoImpl cd = new CardDaoImpl();
-        if(cd.getSum(cardNum)>=sum) {
+        if(cd.getSum(cardNum)<sum) throw new ArithmeticException ("fail not enough money");
             res=cd.changeCash(cardNum, -sum);
             WriteOffDaoImpl wd = new WriteOffDaoImpl();
             wd.addWriteOff((wd.getCount()+1), sum, cardNum, null);
             wd.close();
-        }
-        else {res="fail";}
         cd.close();
         return res;
     }
 
     @Override
     public String makeTransaction(String cardNumFrom, String pin, double sum, String cardNumTo) {
-        String res="";
+        String res;
         CardDaoImpl cd = new CardDaoImpl();
-        if(cd.getSum(cardNumFrom)>=sum && cd.existCard(cardNumTo)) {
+        if(cd.getSum(cardNumFrom)<sum) throw new ArithmeticException ("fail not enough money");
+        if(!cd.existCard(cardNumTo)) throw new NullPointerException ("fail there is no user with such card number");
             res=cd.changeCash(cardNumFrom, -sum);
             cd.changeCash(cardNumTo, sum);
             WriteOffDaoImpl wd = new WriteOffDaoImpl();
             wd.addWriteOff((wd.getCount()+1), sum, cardNumFrom, cardNumTo);
             wd.close();
-        }
-        else {res="fail";}
         cd.close();
         return res;
     }
