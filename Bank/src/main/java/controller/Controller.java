@@ -62,6 +62,7 @@ public class Controller {
         if(code.equals("1")) res = transaction(data.get(1), data.get(2), data.get(3), data.get(4));
         if(code.equals("2")) res = getCash(data.get(1), data.get(2), data.get(3));
         if(code.equals("3")) res = checkSum(data.get(1), data.get(2));
+        if(code.equals("4")) res = checkUser(data.get(1));
         return res;
     }
 
@@ -90,5 +91,10 @@ public class Controller {
     public String checkSum(String cardNum, String pin){
         CardServiceImpl cs = new CardServiceImpl();
         return String.valueOf(cs.getSum(cardNum, pin));
+    }
+
+    public String checkUser (String cardNum){
+        CardServiceImpl cs = new CardServiceImpl();
+        return cs.checkUser(cardNum);
     }
 }

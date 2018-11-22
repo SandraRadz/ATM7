@@ -53,4 +53,10 @@ public class CardServiceImpl implements CardService {
         cd.close();
         return res;
     }
+
+    @Override
+    public String checkUser(String cardNum) {
+        CardDaoImpl cd = new CardDaoImpl();
+        return cd.getOwnerNeme(cardNum);
+    }
 }

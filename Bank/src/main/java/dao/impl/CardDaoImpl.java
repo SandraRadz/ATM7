@@ -77,7 +77,40 @@ public class CardDaoImpl implements CardDao {
         return res;
     }
 
-        public void close() {
+    @Override
+    public boolean existCard(String cardNum) {
+        boolean res=false;
+        String query ="SELECT COUNT(*) FROM card AS exist WHERE number = ?;";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)){
+            preparedStatement.setString(1, cardNum);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                res = (rs.getInt(1)==0?false:true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    @Override
+    public String getOwnerNeme(String cardNum) {
+        String res="no_user";
+        String query ="SELECT user FROM card WHERE number = ?;";
+        try(PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, cardNum);
+            //preparedStatement.setString(2, pin);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                res = (rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    public void close() {
             try { con.close(); } catch(SQLException se) { /*can't do anything */ }
     }
 

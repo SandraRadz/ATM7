@@ -7,4 +7,6 @@ public interface CardDao {
     double getSum(String cardNum);
     //void changeCash (String cardNum, double sum);
     String changeCash (String cardNum, double sum);
+    boolean existCard (String cardNum);
+    String getOwnerNeme(String cardNum);
 }

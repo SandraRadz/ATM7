@@ -7,4 +7,5 @@ public interface CardService {
     //void makeTransaction (String cardNumFrom, String pin, double sum, String cardNumTo);
     String getCash (String cardNum, String pin, double sum);
     String makeTransaction (String cardNumFrom, String pin, double sum, String cardNumTo);
+    String checkUser (String cardNumFrom);
 }
