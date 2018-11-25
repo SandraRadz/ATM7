@@ -34,10 +34,10 @@ class Screen extends JFrame {
      private JTextArea card;
      private JTextArea sum;
      private JTextField userPin = new JTextField();
-     private JTextField transferSumField;
-     private JTextField transferRecipientNum;
-     private JTextField withdrawSumField;
-     private JTextArea date;
+     private JTextField transferSumField = new JTextField();
+     private JTextField transferRecipientNum = new JTextField();
+     private JTextField withdrawSumField = new JTextField();
+     private JTextArea date = new JTextArea();
      private long lastInteractionTime;
 
     // private int[] operationData;
