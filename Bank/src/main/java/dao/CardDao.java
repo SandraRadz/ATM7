@@ -9,4 +9,5 @@ public interface CardDao {
     String changeCash (String cardNum, double sum);
     boolean existCard (String cardNum);
     String getOwnerName(String cardNum);
-}
+
+    }

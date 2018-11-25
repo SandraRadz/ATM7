@@ -21,6 +21,7 @@ public class CardDaoImpl implements CardDao {
             // opening database connection to MySQL server
         try {
             con = DriverManager.getConnection(url, user, password);
+            con.setAutoCommit(false);
         } catch (SQLException e) {
         e.printStackTrace();
     }
@@ -110,8 +111,14 @@ public class CardDaoImpl implements CardDao {
         return res;
     }
 
+
+
     public void close() {
-            try { con.close(); } catch(SQLException se) { /*can't do anything */ }
+
+            try {
+                con.commit();
+                con.close();
+            } catch(SQLException se) { /*can't do anything */ }
     }
 
 }

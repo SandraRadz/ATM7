@@ -28,11 +28,13 @@ public class CardServiceImpl implements CardService {
         String res;
         CardDaoImpl cd = new CardDaoImpl();
         if(cd.getSum(cardNum)<sum) throw new ArithmeticException ("fail not enough money");
-            res=cd.changeCash(cardNum, -sum);
-            WriteOffDaoImpl wd = new WriteOffDaoImpl();
-            wd.addWriteOff((wd.getCount()+1), sum, cardNum, null);
-            wd.close();
         cd.close();
+        cd = new CardDaoImpl();
+        res=cd.changeCash(cardNum, -sum);
+        cd.close();
+        WriteOffDaoImpl wd = new WriteOffDaoImpl();
+        wd.addWriteOff((wd.getCount()+1), sum, cardNum, null);
+        wd.close();
         return res;
     }
 
@@ -42,12 +44,14 @@ public class CardServiceImpl implements CardService {
         CardDaoImpl cd = new CardDaoImpl();
         if(cd.getSum(cardNumFrom)<sum) throw new ArithmeticException ("fail not enough money");
         if(!cd.existCard(cardNumTo)) throw new NullPointerException ("fail there is no user with such card number");
-            res=cd.changeCash(cardNumFrom, -sum);
-            cd.changeCash(cardNumTo, sum);
-            WriteOffDaoImpl wd = new WriteOffDaoImpl();
-            wd.addWriteOff((wd.getCount()+1), sum, cardNumFrom, cardNumTo);
-            wd.close();
         cd.close();
+        cd = new CardDaoImpl();
+        res=cd.changeCash(cardNumFrom, -sum);
+        cd.changeCash(cardNumTo, sum);
+        cd.close();
+        WriteOffDaoImpl wd = new WriteOffDaoImpl();
+        wd.addWriteOff((wd.getCount()+1), sum, cardNumFrom, cardNumTo);
+        wd.close();
         return res;
     }
 
