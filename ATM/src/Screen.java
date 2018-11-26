@@ -66,6 +66,8 @@ class Screen extends JFrame {
         this.setSize(1000, 640);
         this.setResizable(false);
         this.getContentPane().setBackground(Color.WHITE);
+        this.setUndecorated(true);
+        this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
         //this.getContentPane().setBorder(BorderFactory.createLineBorder(Color.lightGray, 2, true));
         try
         {
