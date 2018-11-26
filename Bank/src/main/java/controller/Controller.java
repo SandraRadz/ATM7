@@ -21,39 +21,6 @@ public class Controller implements Runnable {
         } catch(Exception x) { x.printStackTrace(); }
     }
 
-    /*public void start(){
-            try {
-                System.out.println("Waiting for a client...");
-                Socket socket = ss.accept();
-
-                in = new ObjectInputStream(socket.getInputStream());
-                out = new ObjectOutputStream(socket.getOutputStream());
-                Object arrayData;
-                String result;
-                while (true) {
-
-                    arrayData = in.readObject();
-                    ArrayList<String> arr = (ArrayList<String>) arrayData;
-                    System.out.println("+++++++++++++++++ArrayList+++++++++++++++++++++");
-                    for(int i = 0; i < arr.size(); i++) {
-                        System.out.println(arr.get(i));
-                    }
-
-                    result = doQuery(arr);
-                    System.out.println("-----------------resulr----------------"+ result);
-                    out.writeUTF(result); // отсылаем клиенту обратно ту самую строку текста.
-                    out.flush();
-                    out.flush(); // заставляем поток закончить передачу данных.
-                    System.out.println("Waiting for the next operation data...");
-                    System.out.println();
-                }
-            }catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-    }
-*/
     public String doQuery(ArrayList<String> data){
         //всі варіанти відповідно до першого елементу масиву
         String res="fail";
