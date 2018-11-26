@@ -5,11 +5,13 @@ import java.util.ArrayList;
 
 public class Main {
 
+    static Controller controller;
+
     public static void main(String[] ar) {
         int port = 6666;
-        Controller controller = new Controller(port);
-       // controller.getCash("2222222222222222", "2222", "132222112");
-        controller.start();
+        controller = new Controller(port);
+        Thread myThready = new Thread(controller);	//Создание потока "myThready"
+        myThready.start();
 
     }
 }
