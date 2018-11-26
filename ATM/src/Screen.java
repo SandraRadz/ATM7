@@ -1327,7 +1327,8 @@ class Screen extends JFrame {
 //                                      } else {
 
                                         //displayOpSuccess(this, p, opRes);
-                                        displayOpSuccess(this, p, "receive the money.");
+                                        //displayOpSuccess(this, p, "receive the money.");
+                                        displayOpSuccess(this, p, "get cash - " + blsNeeded[0] + "x$500; " + blsNeeded[1] + "x$200; " + blsNeeded[2] + "x$100; " + blsNeeded[3] + "x$50; " + blsNeeded[4] + "x$20; " + blsNeeded[5] + "x$10.");
                                         p.removeAll();
                                         p.updateUI();
                                         successfulLoginMenu(p);
